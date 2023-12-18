@@ -16,7 +16,6 @@ echo -e "\e[32m
 ██ ███ ██ ██  ███    ██ ███ ██ ██  ███         ██ ██  ██    ██ ██ 
  ███ ███  ██ ███████  ███ ███  ██ ███████     ██   ██  ██████  ██ 
 \033[0m"
-echo -e "    \e[31mTelegram Channel: \e[34m@wizwizch\033[0m | \e[31mTelegram Group: \e[34m@wizwizdev\033[0m\n"
 
 #sleep
 echo -e "\e[32mInstalling WizWiz script ... \033[0m\n"
@@ -109,37 +108,6 @@ echo -e "\n\033[33mWizWiz config and script have been installed successfully\033
 
 wait
     
-    
-destination_dir=$(find /var/www/html -type d -name "*wizpanel*" | head -n 1)
-    
-if [ -z "$destination_dir" ]; then
-    RANDOM_NUMBER=$(( RANDOM % 10000000 + 1000000 ))
-    mkdir "/var/www/html/wizpanel${RANDOM_NUMBER}"
-    echo "Directory created: wizpanel${RANDOM_NUMBER}"
-    echo "Folder created successfully!"
-else
-    echo "Folder already exists."
-fi
-   
- destination_dir=$(find /var/www/html -type d -name "*wizpanel*" | head -n 1)
-
- cd /var/www/html/
- wget -O wizwizpanel.zip https://github.com/EarlVadim/wizwiz/releases/download/9.1.1/wizwizpanel.zip
-
- file_to_transfer="/var/www/html/wizwizpanel.zip"
- destination_dir=$(find /var/www/html -type d -name "*wizpanel*" | head -n 1)
-
- if [ -z "$destination_dir" ]; then
-   echo "Error: Could not find directory containing 'wiz' in '/var/www/html'"
-   exit 1
- fi
-
- mv "$file_to_transfer" "$destination_dir/" && yes | unzip "$destination_dir/wizwizpanel.zip" -d "$destination_dir/" && rm "$destination_dir/wizwizpanel.zip" && sudo chmod -R 755 "$destination_dir/" && sudo chown -R www-data:www-data "$destination_dir/" 
-
-
-wait
-
-
 if [ ! -d "/root/confwizwiz" ]; then
 
     sudo mkdir /root/confwizwiz
@@ -187,11 +155,9 @@ read -p "Enter the domain: " domainname
 if [ "$domainname" = "" ]; then
 
 echo -e "\n\033[91mPlease wait ...\033[0m\n"
-sleep 3
+sleep 1
 
 echo -e "\e[36mNothing was registered for the domain.\033[0m\n"
-
-echo -e "\n\033[0m Good Luck Baby\n"
 
 else
 # variables
@@ -205,7 +171,6 @@ PATHS=$(cat /root/confwizwiz/dbrootwizwiz.txt | grep '$path' | cut -d"'" -f2)
 (crontab -l ; echo "* * * * * curl https://${DOMAIN_NAME}/wizwizxui-timebot/settings/warnusers.php >/dev/null 2>&1") | sort - | uniq - | crontab -
 (crontab -l ; echo "* * * * * curl https://${DOMAIN_NAME}/wizwizxui-timebot/settings/gift2all.php >/dev/null 2>&1") | sort - | uniq - | crontab -
 (crontab -l ; echo "*/3 * * * * curl https://${DOMAIN_NAME}/wizwizxui-timebot/settings/tronChecker.php >/dev/null 2>&1") | sort - | uniq - | crontab -
-(crontab -l ; echo "* * * * * curl https://${DOMAIN_NAME}/wizpanel${PATHS}/backupnutif.php >/dev/null 2>&1") | sort - | uniq - | crontab -
 
 echo -e "\n\e[92m Setting Up Cron...\033[0m\n"
 
@@ -353,15 +318,8 @@ wait
         echo -e "\e[33mDatabase name: \e[36m${dbname}\033[0m"
         echo -e "\e[33mDatabase username: \e[36m${dbuser}\033[0m"
         echo -e "\e[33mDatabase password: \e[36m${dbpass}\033[0m"
-        echo " "
-        echo -e "\e[100mwizwiz panel:\033[0m"
-        echo -e "\e[33maddres: \e[36mhttps://${YOUR_DOMAIN}/wizpanel${RANDOM_NUMBER}\033[0m"
-        echo -e "\e[33musername panel: \e[36madmin\033[0m"
-        echo -e "\e[33mpassword panel: \e[36madmin\033[0m\n"
         
         wait
-        
-        echo -e "Good Luck Baby! \e[94mThis project is for free. If you like it, be sure to donate me :) , so let's go \033[0m\n"
 
         fi
 

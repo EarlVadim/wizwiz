@@ -1063,7 +1063,7 @@ if($userInfo['step'] == "editRewardChannel" && ($from_id == $admin || $userInfo[
             exit();
         }
     }
-    sendMessage("😡 Папа, робот еще не присоединился к каналу, сначала администрируй робота в канале и отправь его идентификатор.");
+    sendMessage("😡 Botfather еще не присоединился к каналу, сначала администрируй робота в канале и отправь его идентификатор.");
 }
 if($data=="editLockChannel" && ($from_id == $admin || $userInfo['isAdmin'] == true)){
     delMessage();
@@ -1199,19 +1199,19 @@ if(preg_match('/createAccCategory(\d+)_(\d+)/',$data,$match) && ($from_id == $ad
         }
         $keyboard[] = ['text' => $buttonValues['back_to_main'], 'callback_data' => "createAccServer$sid"];
         $keyboard = array_chunk($keyboard,1);
-        editText($message_id, "3️⃣ Шаг третий: Выбирайте один из планов и переходите к оплате 🤲 🕋", json_encode(['inline_keyboard'=>$keyboard]));
+        editText($message_id, "3️⃣ Шаг третий: Выберите один из пакетов и переходите к оплате 🤲 🕋", json_encode(['inline_keyboard'=>$keyboard]));
     }
 
 }
 if(preg_match('/^createAccPlan(\d+)/',$data,$match) && $text != $buttonValues['cancel']){
     delMessage();
-    sendMessage("❗️Пожалуйста, введите продолжительность аккаунта в (днях).:",$cancelKey);
+    sendMessage("❗️Введите период в днях.:",$cancelKey);
     setUser('createAccDate' . $match[1]);
 }
 if(preg_match('/^createAccDate(\d+)/',$userInfo['step'],$match) && $text != $buttonValues['cancel']){
     if(is_numeric($text)){
         if($text >0){
-            sendMessage("❕Объем аккаунтов достигает гигабайт ( GB ) входить:");
+            sendMessage("❕Введите объем траффика в Gb:");
             setUser('createAccVolume' . $match[1] . "_" . $text);
         }else{
             sendMessage("Число должно быть больше 0");
@@ -1633,8 +1633,8 @@ if(preg_match('/havePaiedWeSwap(.*)/',$data,$match)) {
         $stmt->execute();
         $stmt->close();
         
-        sendMessage("افزایش حساب شما با موفقیت تأیید شد\n✅ مبلغ " . number_format($price). " تومان به حساب شما اضافه شد");
-        sendMessage("✅ مبلغ " . number_format($price) . " تومان به کیف پول کاربر $from_id توسط درگاه ارزی ریالی اضافه شد",null,null,$admin);                
+        sendMessage("Пополнение вашего счета успешно подтверждено\n✅ " . number_format($price). " токенов добавлено на вас счет");
+        sendMessage("✅ Сумма " . number_format($price) . " токенов на кошелек пользователя $from_id добавлено валютным шлюзом",null,null,$admin);                
     }
     elseif($payType == "BUY_SUB"){
     $uid = $from_id;
@@ -1771,8 +1771,8 @@ if(preg_match('/havePaiedWeSwap(.*)/',$data,$match)) {
         $acc_text = "😍 Ваш новый заказ
 📡 Протокол: $protocol
 🔮 Имя сервиса: $remark
-🔋 Объем услуги: $volume Гб.
-⏰ Продолжительность услуги: $days .
+🔋 Объем траффика: $volume Гб.
+⏰ Период действия: $days дней.
 " . ($botState['configLinkState'] != "off"?"
 💝 config : <code>$vray_link</code>":"");
 
@@ -1961,14 +1961,14 @@ if($response->success){
             ['text'=>"Это заняло некоторое время 😁",'callback_data'=>"wizwizch"]
             ],
         ]]);
-sendMessage("🔋|💰 Увеличьте время с помощью (кошелька)
+sendMessage("🔋|💰 Увеличить период действия с помощью кошелька
 
-Идентификатор пользователя: $from_id
-Имя пользователя: $first_name
+От пользователя: $from_id
+Имя : $first_name
 ⚡️ Имя пользователя: $username
 🎈 Имя сервиса: $remark
-⏰ Период увеличения: $volume день.
-💰Цена: $price Токен
+⏰ Период увеличения: $volume дней.
+💰Цена: $price Токенов
 ⁮⁮ ⁮⁮
 ",$keys,"html", $admin);
 
@@ -2017,17 +2017,17 @@ if($response->success){
             ['text'=>"Наконец-то один том увеличился 😁",'callback_data'=>"wizwizch"]
             ],
         ]]);
-sendMessage("🔋|💰 увеличение объема с помощью (кошелька)
+sendMessage("🔋|💰 увеличение объема траффика с помощью кошелька
 
-Идентификатор пользователя: $from_id
-Имя пользователя: $first_name
+От пользователя: $from_id
+Имя: $first_name
 ⚡️ Имя пользователя: $username
 🎈 Имя сервиса: $remark
-⏰ Период увеличения: $volume Гб
-💰Цена: $price Токен
+🔋 Увеличение траффика: $volume Гб
+💰Цена: $price Токенов
 ⁮⁮ ⁮⁮
 ",$keys,"html", $admin);
-    sendMessage( "✅$volume Гб добавлен к объему вашего сервиса",getMainKeys());exit;
+    sendMessage( "✅$volume Гб добавлено к объему вашего траффика",getMainKeys());exit;
     
 
 }else {
@@ -2071,15 +2071,15 @@ elseif($payType == "RENEW_SCONFIG"){
 	$stmt->execute();
 	$stmt->close();
 
-    sendMessage("🔋|💰 Расширение деталей конфигурации с помощью (кошелька)
+    sendMessage("🔋|💰 Продление пакета с помощью кошелька
     
-     Идентификатор пользователя: $from_id
-     Имя пользователя: $first_name
+     От пользователя: $from_id
+     Имя: $first_name
      ⚡️ Имя пользователя: $username
      🎈 Имя сервиса: $remark
-     ⏰ Продолжительность конфигурации: $volume Гб.
-     Объем конфигурации: $days
-     💰Цена: $price Токен
+     🔋 Объем траффика: $volume Гб.
+     ⏰ Период действия: $days дней.
+     💰Цена: $price Токенов
      ⁮⁮ ⁮⁮
     ",$keys,"html", $admin);
 
@@ -2924,8 +2924,8 @@ if(preg_match('/payCustomWithWallet(.*)/',$data, $match)){
         $acc_text = "😍 Ваш новый заказ
 📡 Протокол: $protocol
 🔮 Имя сервиса: $remark
-🔋 Объем услуги: $volume Гб.
-⏰ Продолжительность услуги: $days
+🔋 Объем траффика: $volume Гб.
+⏰ Период действия: $days дней
 " . ($botState['configLinkState'] != "off"?"
 💝 config : <code>$vray_link</code>":"");
 if($botState['subLinkState'] == "on") $acc_text .= "
@@ -5912,7 +5912,7 @@ if(preg_match('/sConfigRenew(\d+)/', $data,$match)){
                 $id = $file['id'];
                 $name = $file['title'];
                 $price = $file['price'];
-                $price = ($price == 0) ? 'رایگان' : number_format($price).' تومان ';
+                $price = ($price == 0) ? 'Бесплатно' : number_format($price).' токенов ';
                 $keyboard[] = ['text' => "$name - $price", 'callback_data' => "sConfigRenewPlan{$id}_{$inboundId}"];
             }
         }
@@ -5920,7 +5920,7 @@ if(preg_match('/sConfigRenew(\d+)/', $data,$match)){
         $keyboard = array_chunk($keyboard,1);
         editText($message_id, "3️⃣  Шаг третий:
 
-Выбирайте один из планов и переходите к оплате 🤲 🕋", json_encode(['inline_keyboard'=>$keyboard]));
+Выберите один из пакетов и переходите к оплате 🤲 🕋", json_encode(['inline_keyboard'=>$keyboard]));
     }else sendMessage("💡В этой категории нет контента ");
 }
 if(preg_match('/sConfigRenewPlan(\d+)_(\d+)/',$data, $match) && ($botState['sellState']=="on" ||$from_id ==$admin) && $text != $buttonValues['cancel']){
@@ -6087,7 +6087,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
     $step = checkStep('server_plans');
 
     if($step==1 and $text!=$buttonValues['cancel']){
-        $msg = '🔰 Пожалуйста, укажите стоимость плана в токенах!';
+        $msg = '🔰 Пожалуйста, укажите стоимость пакета в токенах!';
         if(strlen($text)>1){
             $stmt = $connection->prepare("UPDATE `server_plans` SET `title`=?,`step`=2 WHERE `active`=0 and `step`=1");
             $stmt->bind_param("s", $text);
@@ -6185,7 +6185,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->bind_param("s", $text);
         $stmt->execute();
         $stmt->close();
-        sendMessage("📅 | Пожалуйста, введите количество дней действия этого плана:");
+        sendMessage("📅 | Введите период действия этого пакета в днях:");
     }
     if($step==61 and $text!=$buttonValues['cancel']){
         if(!is_numeric($text)){
@@ -6198,7 +6198,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->execute();
         $stmt->close();
 
-        sendMessage("🔋 | Пожалуйста, введите размер тома в ГБ этого плана.:");
+        sendMessage("🔋 | Введите объем траффика этого пакета в Гб:");
     }
     if($step==62 and $text!=$buttonValues['cancel']){
         if(!is_numeric($text)){
@@ -6210,7 +6210,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->bind_param("d", $text);
         $stmt->execute();
         $stmt->close();
-        sendMessage("🛡 | Пожалуйста, введите идентификатор линии подключения на панели.:");
+        sendMessage("🛡 | Пожалуйста, введите Inbound-ID из X-UI:");
     }
     if($step==63 and $text!=$buttonValues['cancel']){
         if(!is_numeric($text)){
@@ -6240,7 +6240,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->execute();
         $stmt->close();
 
-        sendMessage("Пожалуйста, введите мощность аккаунта нужного порта");
+        sendMessage("Введите емкость этого inbound");
     }
     if($step==64 and $text!=$buttonValues['cancel']){
         if(!is_numeric($text)){
@@ -6253,7 +6253,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->execute();
         $stmt->close();
 
-        sendMessage("🧲 | Пожалуйста, введите количество пользователей этого плана (0 — неограниченно)");
+        sendMessage("🧲 | Введите количество пользователей этого пакета (0 — неограниченно)");
     }
     if($step==65 and $text!=$buttonValues['cancel']){
         if(!is_numeric($text)){
@@ -6265,15 +6265,15 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->execute();
         $stmt->close();
 
-        $msg = '🔻Напишите объяснение желаемого плана:';
+        $msg = '🔻Напишите описание этого пакета:';
         sendMessage($msg,$cancelKey); 
     }
     if($step==52 and $text!=$buttonValues['cancel']){
         if($userInfo['step'] == "addNewPlan" && $text != "vless" && $text != "vmess" && $text != "trojan"){
-            sendMessage("Пожалуйста, введите только протоколы vless и vmess.",$cancelKey);
+            sendMessage("Введите только протоколы vless, vmess, trojan.",$cancelKey);
             exit();
         }elseif($userInfo['step'] == "addNewRahgozarPlan" && $text != "vless" && $text != "vmess"){
-            sendMessage("Пожалуйста, введите только протоколы vless и vmess.",$cancelKey);
+            sendMessage("Введите только протоколы vless и vmess.",$cancelKey);
             exit();
         }
         
@@ -6282,7 +6282,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->execute();
         $stmt->close();
 
-        sendMessage("📅 | Пожалуйста, введите количество дней действия этого плана:");
+        sendMessage("📅 | Введите период действия этого пакета в днях:");
     }
     if($step==53 and $text!=$buttonValues['cancel']){
         if(!is_numeric($text)){
@@ -6295,7 +6295,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->execute();
         $stmt->close();
 
-        sendMessage("🔋 | Пожалуйста, введите размер тома в ГБ этого плана.:");
+        sendMessage("🔋 | Введите объем траффика этого пакета в ГБ:");
     }
     if($step==54 and $text!=$buttonValues['cancel']){
         if(!is_numeric($text)){
@@ -6305,10 +6305,10 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         
         if($userInfo['step'] == "addNewPlan"){
             $sql = ("UPDATE `server_plans` SET `volume`=?,`step`=55 WHERE `active`=0");
-            $msg = "🔉 | Пожалуйста, выберите тип сети этого плана (ws | tcp | grpc) :";
+            $msg = "🔉 | Выберите тип транспорта этого пакета (ws | tcp | grpc) :";
         }elseif($userInfo['step'] == "addNewRahgozarPlan"){
             $sql = ("UPDATE `server_plans` SET `volume`=?, `type`='ws', `step`=4 WHERE `active`=0");
-            $msg = '🔻Напишите объяснение желаемого плана:';
+            $msg = '🔻Напишите описание этого пакета:';
         }
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("d", $text);
@@ -6319,7 +6319,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
     }
     if($step==55 and $text!=$buttonValues['cancel']){
         if($text != "tcp" && $text != "ws" && $text != "grpc"){
-            sendMessage("Пожалуйста, введите только тип (ws | tcp | grpc)");
+            sendMessage("Введите только тип (ws | tcp | grpc)");
             exit();
         }
         $stmt = $connection->prepare("UPDATE `server_plans` SET `type`=?,`step`=4 WHERE `active`=0");
@@ -6328,7 +6328,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan)/',$userInfo['step']) and $text!=
         $stmt->close();
 
 
-        $msg = '🔻Напишите объяснение желаемого плана:';
+        $msg = '🔻Напишите описание этого пакета:';
         sendMessage($msg,$cancelKey); 
     }
     
@@ -6358,13 +6358,13 @@ if($data == 'backplan' and ($from_id == $admin || $userInfo['isAdmin'] == true))
     }
     $keyboard = array_chunk($keyboard,2);
     $keyboard[] = [['text'=>"➖➖➖",'callback_data'=>"wizwizch"]];
-    $keyboard[] = [['text'=>'➕ Добавление выделенного и общего плана','callback_data'=>"addNewPlan"]];
-    $keyboard[] = [['text'=>'➕ Добавить план прохожего','callback_data'=>"addNewRahgozarPlan"]];
-    $keyboard[] = [['text'=>'➕ Добавление плана томов','callback_data'=>"volumePlanSettings"],['text'=>'➕ Добавить временную шкалу','callback_data'=>"dayPlanSettings"]];
+    $keyboard[] = [['text'=>'➕ Добавление выделенного и общего пакета','callback_data'=>"addNewPlan"]];
+    $keyboard[] = [['text'=>'➕ Добавить гостевой пакет','callback_data'=>"addNewRahgozarPlan"]];
+    $keyboard[] = [['text'=>'➕ Добавить траффик','callback_data'=>"volumePlanSettings"],['text'=>'➕ Добавить период','callback_data'=>"dayPlanSettings"]];
     $keyboard[] = [['text' => "➕ Добавить кастомный план", 'callback_data' => "editCustomPlan"]];
     $keyboard[] = [['text' => $buttonValues['back_button'], 'callback_data' => "managePanel"]];
 
-    $msg = ' ☑️ Управление планами:';
+    $msg = ' ☑️ Управление пакетами:';
     
     if(isset($data) and $data=='backplan') {
         editText($message_id, $msg, json_encode(['inline_keyboard'=>$keyboard]));
@@ -6437,7 +6437,7 @@ if(preg_match('/plansList(\d+)/', $data,$match)){
     $stmt->close();
 
     if($res->num_rows==0){
-        alert("К сожалению, вы не выбрали для этого ни одного плана. 😑");
+        alert("К сожалению, вы не выбрали для этого ни одного пакета. 😑");
         exit;
     }else {
         $keyboard = [];
@@ -6448,7 +6448,7 @@ if(preg_match('/plansList(\d+)/', $data,$match)){
         }
         $keyboard = array_chunk($keyboard,2);
         $keyboard[] = [['text' => $buttonValues['back_button'], 'callback_data' => "backplan"],];
-        $msg = ' ▫️ Выберите план и перейдите к редактированию:';
+        $msg = ' ▫️ Выберите пакет и перейдите к редактированию:';
         editText($message_id, $msg, json_encode(['inline_keyboard'=>$keyboard]), "HTML");
     }
     exit();
@@ -6458,7 +6458,7 @@ if(preg_match('/planDetails(\d+)/', $data,$match)){
     if($keys == null){
         alert("Ничего не найдено");
         exit;
-    }else editText($message_id, "Изменить настройки плана", $keys, "HTML");
+    }else editText($message_id, "Изменить настройки пакета", $keys, "HTML");
 }
 if(preg_match('/^wizwizplanacclist(\d+)/',$data,$match) and ($from_id == $admin || $userInfo['isAdmin'] == true)){
     $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `status`=1 AND `fileid`=?");
@@ -6503,12 +6503,12 @@ if(preg_match('/^wizwizplandelete(\d+)/',$data,$match) and ($from_id == $admin |
     $stmt->close();
     alert("Я удалил план для тебя ☹️☑️");
     
-    editText($message_id,"Пожалуйста, выберите один из ключей ниже",getMainKeys());
+    editText($message_id,"Выберите один из ключей ниже",getMainKeys());
 }
 if(preg_match('/^wizwizplanname(\d+)/',$data) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
     delMessage();
-    sendMessage("🔅 Выберите имя для нового плана:",$cancelKey);exit;
+    sendMessage("🔅 Выберите имя для нового пакета:",$cancelKey);exit;
 }
 if(preg_match('/^wizwizplanname(\d+)/',$userInfo['step'], $match) && $text != $buttonValues['cancel']){
     $stmt = $connection->prepare("UPDATE `server_plans` SET `title`=? WHERE `id`=?");
@@ -6523,12 +6523,12 @@ if(preg_match('/^wizwizplanname(\d+)/',$userInfo['step'], $match) && $text != $b
     if($keys == null){
         alert("Ничего не найдено");
         exit;
-    }else sendMessage("Изменить настройки плана", $keys);
+    }else sendMessage("Изменить настройки пакета", $keys);
 }
 if(preg_match('/^wizwizplanslimit(\d+)/',$data) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
     delMessage();
-    sendMessage("🔅 Выберите новую емкость для плана:",$cancelKey);exit;
+    sendMessage("🔅 Выберите новую емкость для пакета:",$cancelKey);exit;
 }
 if(preg_match('/^wizwizplanslimit(\d+)/',$userInfo['step'], $match) && $text != $buttonValues['cancel']){
     $stmt = $connection->prepare("UPDATE `server_plans` SET `acount`=? WHERE `id`=?");
@@ -6536,19 +6536,19 @@ if(preg_match('/^wizwizplanslimit(\d+)/',$userInfo['step'], $match) && $text != 
     $stmt->execute();
     $stmt->close();
 
-    sendMessage("Я успешно изменил его для вас ☺️☑️");
+    sendMessage("Изменено ☺️☑️");
     setUser();
     
     $keys = getPlanDetailsKeys($match[1]);
     if($keys == null){
         alert("Ничего не найдено");
         exit;
-    }else sendMessage("Изменить настройки плана", $keys, "HTML");
+    }else sendMessage("Изменить настройки пакета", $keys, "HTML");
 }
 if(preg_match('/^wizwizplansinobundid(\d+)/',$data) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
     delMessage();
-    sendMessage("🔅 Выберите новую строку для плана:",$cancelKey);exit;
+    sendMessage("🔅 Выберите новую строку для пакета:",$cancelKey);exit;
 }
 if(preg_match('/^wizwizplansinobundid(\d+)/',$userInfo['step'], $match) && $text != $buttonValues['cancel']){
     $stmt = $connection->prepare("UPDATE `server_plans` SET `inbound_id`=? WHERE `id`=?");
@@ -6563,12 +6563,12 @@ if(preg_match('/^wizwizplansinobundid(\d+)/',$userInfo['step'], $match) && $text
     if($keys == null){
         alert("Ничего не найдено");
         exit;
-    }else sendMessage("Изменить настройки плана", $keys, "HTML");
+    }else sendMessage("Изменить настройки пакета", $keys, "HTML");
 }
 if(preg_match('/^wizwizplaneditdes(\d+)/',$data) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
     delMessage();
-    sendMessage("🎯 Введите свое описание для меня:",$cancelKey);exit;
+    sendMessage("🎯 Введите описание:",$cancelKey);exit;
 }
 if(preg_match('/^wizwizplaneditdes(\d+)/',$userInfo['step'], $match) && $text != $buttonValues['cancel']){
     $stmt = $connection->prepare("UPDATE `server_plans` SET `descr`=? WHERE `id`=?");
@@ -6577,19 +6577,19 @@ if(preg_match('/^wizwizplaneditdes(\d+)/',$userInfo['step'], $match) && $text !=
     $stmt->close();
 
 
-    sendMessage("Я успешно изменил его для вас ☺️☑️");
+    sendMessage("Изменено ☺️☑️");
     setUser();
     
     $keys = getPlanDetailsKeys($match[1]);
     if($keys == null){
         alert("Ничего не найдено");
         exit;
-    }else sendMessage("Изменить настройки плана", $keys, "HTML");
+    }else sendMessage("Изменить настройки пакета", $keys, "HTML");
 }
 if(preg_match('/^editDestName(\d+)/',$data) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
     delMessage();
-    sendMessage("🎯 dest войди для меня:\nЧтобы удалить текст /empty входить",$cancelKey);exit;
+    sendMessage("🎯 dest \nЧтобы удалить текст введи /empty",$cancelKey);exit;
 }
 if(preg_match('/^editDestName(\d+)/',$userInfo['step'], $match) && $text != $buttonValues['cancel']){
     if($text == "/empty"){
@@ -6603,19 +6603,19 @@ if(preg_match('/^editDestName(\d+)/',$userInfo['step'], $match) && $text != $but
     $stmt->close();
 
 
-    sendMessage("Я успешно изменил его для вас ☺️☑️");
+    sendMessage("Изменено ☺️☑️");
     setUser();
     
     $keys = getPlanDetailsKeys($match[1]);
     if($keys == null){
         alert("Ничего не найдено");
         exit;
-    }else sendMessage("Изменить настройки плана", $keys, "HTML");
+    }else sendMessage("Изменить настройки пакета", $keys, "HTML");
 }
 if(preg_match('/^editSpiderX(\d+)/',$data) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
     delMessage();
-    sendMessage("🎯 spiderX رو برام وارد کن\nبرای حذف کردن متن /empty رو وارد کن",$cancelKey);exit;
+    sendMessage("🎯 spiderX \n Чтобы удалить текст, введите /empty",$cancelKey);exit;
 }
 if(preg_match('/^editSpiderX(\d+)/',$userInfo['step'], $match) && $text != $buttonValues['cancel']){
     if($text == "/empty"){
@@ -6629,7 +6629,7 @@ if(preg_match('/^editSpiderX(\d+)/',$userInfo['step'], $match) && $text != $butt
     $stmt->close();
 
 
-    sendMessage("Я успешно изменил его для вас ☺️☑️");
+    sendMessage("Изменено ☺️☑️");
     setUser();
     
     $keys = getPlanDetailsKeys($match[1]);
@@ -6641,12 +6641,12 @@ if(preg_match('/^editSpiderX(\d+)/',$userInfo['step'], $match) && $text != $butt
 if(preg_match('/^editServerNames(\d+)/',$data) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
     delMessage();
-    sendMessage("🎯 serverNames Введите меня, как показано ниже:\n
+    sendMessage("🎯 serverNames Введите как показано ниже:\n
 `[
   \"yahoo.com\",
   \"www.yahoo.com\"
 ]`
-    \n\nЧтобы удалить текст /empty входить",$cancelKey);exit;
+    \n\n Чтобы удалить текст введите /empty",$cancelKey);exit;
 }
 if(preg_match('/^editServerNames(\d+)/',$userInfo['step'], $match) && $text != $buttonValues['cancel']){
     if($text == "/empty"){
@@ -6660,14 +6660,14 @@ if(preg_match('/^editServerNames(\d+)/',$userInfo['step'], $match) && $text != $
     $stmt->close();
 
 
-    sendMessage("Я успешно изменил его для вас ☺️☑️");
+    sendMessage("Изменено ☺️☑️");
     setUser();
     
     $keys = getPlanDetailsKeys($match[1]);
     if($keys == null){
         alert("Ничего не найдено");
         exit;
-    }else sendMessage("Изменить настройки плана", $keys, "HTML");
+    }else sendMessage("Изменить настройки пакета", $keys, "HTML");
 }
 if(preg_match('/^editFlow(\d+)/',$data, $match) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
@@ -6676,7 +6676,7 @@ if(preg_match('/^editFlow(\d+)/',$data, $match) and ($from_id == $admin || $user
         [['text'=>"None", 'callback_data'=>"editPFlow" . $match[1] . "_None"]],
         [['text'=>"xtls-rprx-vision", 'callback_data'=>"editPFlow" . $match[1] . "_xtls-rprx-vision"]],
         ]]);
-    sendMessage("🎯 Пожалуйста, выберите один из следующих",$keys);exit;
+    sendMessage("🎯 Выберите один из следующих ",$keys);exit;
 }
 if(preg_match('/^editPFlow(\d+)_(.*)/',$data, $match) && $text != $buttonValues['cancel']){
     $stmt = $connection->prepare("UPDATE `server_plans` SET `flow`=? WHERE `id`=?");
@@ -6684,7 +6684,7 @@ if(preg_match('/^editPFlow(\d+)_(.*)/',$data, $match) && $text != $buttonValues[
     $stmt->execute();
     $stmt->close();
 
-    alert("Я успешно изменил его для вас ☺️☑️");
+    alert("Изменено ☺️☑️");
     setUser();
     
     $keys = getPlanDetailsKeys($match[1]);
@@ -6693,7 +6693,7 @@ if(preg_match('/^editPFlow(\d+)_(.*)/',$data, $match) && $text != $buttonValues[
 if(preg_match('/^wizwizplanrial(\d+)/',$data) and ($from_id == $admin || $userInfo['isAdmin'] == true) && $text != $buttonValues['cancel']){
     setUser($data);
     delMessage();
-    sendMessage("🎯 Вы подняли цену 😂, давайте я посмотрю новую цену :",$cancelKey);exit;
+    sendMessage("🎯 Вы подняли цену 😂, давайте я посмотрю новую цену: ",$cancelKey);exit;
 }
 if(preg_match('/^wizwizplanrial(\d+)/',$userInfo['step'], $match) && $text != $buttonValues['cancel']){
     if(is_numeric($text)){
@@ -6702,14 +6702,14 @@ if(preg_match('/^wizwizplanrial(\d+)/',$userInfo['step'], $match) && $text != $b
         $stmt->execute();
         $stmt->close();
 
-        sendMessage("Я успешно изменил его для вас ☺️☑️");
+        sendMessage("Изменено ☺️☑️");
         setUser();
         
         $keys = getPlanDetailsKeys($match[1]);
         if($keys == null){
             alert("Ничего не найдено");
             exit;
-        }else sendMessage("Изменить настройки плана", $keys, "HTML");
+        }else sendMessage("Изменить настройки пакета", $keys, "HTML");
     }else{
         sendMessage("Я вам говорю, введите цену, вы взяли, вы написали что-то еще 🫤 (введите цифру)");
     }
@@ -6811,7 +6811,7 @@ if(preg_match('/orderDetails(\d+)/', $data, $match) && ($botState['sellState']==
     }else editText($message_id, $keys['msg'], $keys['keyboard'], "HTML");
 }
 if($data=="cantEditGrpc"){
-    alert("Вы не можете изменить природу этой конфигурации!");
+    alert("Вы не можете изменить эту конфигурацию!");
     exit();
 }
 if(preg_match('/^changeCustomPort(\d+)/',$data,$match)){
@@ -6827,7 +6827,7 @@ if(preg_match('/^changeCustomPort(\d+)/',$userInfo['step'],$match) && $text != $
         $stmt->close();  
         sendMessage($mainValues['saved_successfuly'],$removeKeyboard);
          
-        sendMessage("Изменить настройки плана", getPlanDetailsKeys($match[1]));
+        sendMessage("Изменить настройки пакета", getPlanDetailsKeys($match[1]));
         setUser();
     }else sendMessage($mainValues['send_only_number']);
 }
@@ -7985,7 +7985,7 @@ elseif(preg_match('/^delUserConfig(\d+)/',$data,$match)){
 
     editText($message_id, "Вы уверены, что хотите удалить конфигурацию $remark?",json_encode([
         'inline_keyboard' => [
-            [['text'=>"ДА,'callback_data'=>"yesDeleteUserConfig" . $match[1]],['text'=>"НЕТ",'callback_data'=>"noDontDelete"]]
+            [['text'=>"ДА",'callback_data'=>"yesDeleteUserConfig" . $match[1]],['text'=>"НЕТ",'callback_data'=>"noDontDelete"]]
             ]
     ]));
 }
@@ -8063,7 +8063,7 @@ if(preg_match('/increaseADay(.*)/', $data, $match)){
         }
         if($price == 0) $price = "Бесплатно";
         else $price .= " токен";
-        $keyboard[] = ['text' => "$title روز $price", 'callback_data' => "selectPlanDayIncrease{$match[1]}_$id"];
+        $keyboard[] = ['text' => "на $title дней за $price токенов", 'callback_data' => "selectPlanDayIncrease{$match[1]}_$id"];
     }
     $keyboard = array_chunk($keyboard,2);
     $keyboard[] = [['text' => $buttonValues['back_to_main'], 'callback_data' => "mainMenu"]];
@@ -8724,7 +8724,7 @@ if(preg_match('/payIncraseWithWallet(.*)/', $data,$match)){
     $userwallet = $userInfo['wallet'];
 
     if($userwallet < $price) {
-        $needamount = $price - $userwallet;.
+        $needamount = $price - $userwallet;
         alert("💡Баланс кошелька (".number_format($userwallet)." токенов) недостаточно, дайте пожалуйста сумму ".number_format($needamount)." Пополните токены ",true);
         exit;
     }
@@ -9002,7 +9002,7 @@ if(preg_match('/^addServerPanelUrl(.*)/',$userInfo['step'],$match) and $text != 
 91.257.142.14
 sub.domain.com
 ❗️Если вы хотите настроить несколько доменов или IP, необходимо написать ниже и отправить роботу:
-    \n\n🔻Чтобы оставить текст пустым /empty входить");
+    \n\n🔻Чтобы оставить текст пустым введите /empty");
     exit();
 }
 if(preg_match('/^addServerIp(.*)/',$userInfo['step'],$match) and $text != $buttonValues['cancel']) {
@@ -9016,21 +9016,21 @@ if(preg_match('/^addServerSni(.*)/',$userInfo['step'],$match) and $text != $butt
     $data = json_decode($match[1],true);
     $data['sni'] = $text;
     setUser('addServerHeaderType' . json_encode($data, JSON_UNESCAPED_UNICODE));
-    sendMessage( "🔅 Если вы используете тип заголовка, введите http:\n\n🔻Чтобы оставить текст пустым /empty входить");
+    sendMessage( "🔅 Если вы используете тип заголовка, введите http:\n\n🔻Чтобы оставить текст пустым введите /empty");
     exit();
 }
 if(preg_match('/^addServerHeaderType(.*)/',$userInfo['step'],$match) and $text != $buttonValues['cancel']) {
     $data = json_decode($match[1],true);
     $data['header_type'] = $text;
     setUser('addServerRequestHeader' . json_encode($data, JSON_UNESCAPED_UNICODE));
-    sendMessage( "🔅Если вы используете заголовок, введите адрес Host:test.com и замените test.com желаемым адресом.:\n\n🔻Чтобы оставить текст пустым /empty входить");
+    sendMessage( "🔅Если вы используете заголовок, введите адрес Host:test.com и замените test.com желаемым адресом.:\n\n🔻Чтобы оставить текст пустым введите /empty");
     exit();
 }
 if(preg_match('/^addServerRequestHeader(.*)/',$userInfo['step'],$match) and $text != $buttonValues['cancel']) {
     $data = json_decode($match[1],true);
     $data['request_header'] = $text;
     setUser('addServerResponseHeader' . json_encode($data, JSON_UNESCAPED_UNICODE));
-    sendMessage( "🔅 Пожалуйста, введите заголовок ответа панели\n\n🔻Чтобы оставить текст пустым /empty входить");
+    sendMessage( "🔅 Пожалуйста, введите заголовок ответа панели\n\n🔻Чтобы оставить текст пустым введите /empty");
     exit();
 }
 if(preg_match('/^addServerResponseHeader(.*)/',$userInfo['step'],$match) and $text != $buttonValues['cancel']) {
@@ -9040,7 +9040,7 @@ if(preg_match('/^addServerResponseHeader(.*)/',$userInfo['step'],$match) and $te
     sendMessage( "🔅 Пожалуйста, войдите в панель безопасности
 
 ⚠️ Примечание. Чтобы использовать tls или xtls, введите слово tls или xtls в противном случае. 👇
-\n🔻Чтобы оставить текст пустым /empty входить");
+\n🔻Чтобы оставить текст пустым введите /empty");
 exit();
 }
 if(preg_match('/^addServerSecurity(.*)/',$userInfo['step'],$match) and $text != $buttonValues['cancel']) {

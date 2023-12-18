@@ -1447,37 +1447,35 @@ function getUserOrderDetailKeys($id){
                 if($security == "xtls"){
                     $keyboard = [
                         [
-            			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "User ID", 'callback_data' => "wizwizch"],
+						    ['text' => "User ID", 'callback_data' => "wizwizch"],
+            			    ['text' => $userId, 'callback_data' => "wizwizch"],                            
+                        ],
+                        [   
+						    ['text' => "First Name", 'callback_data' => "wizwizch"],
+            			    ['text' => $firstName, 'callback_data' => "wizwizch"],                            
                         ],
                         [
-            			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                            ['text' => "First Name", 'callback_data' => "wizwizch"],
+						    ['text' => "Buying agent", 'callback_data' => "wizwizch"],
+            			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],                            
                         ],
                         [
-            			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
-                            ['text' => "Buying agent", 'callback_data' => "wizwizch"],
+						    ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+            			    ['text' => "$name", 'callback_data' => "wizwizch"],г                            
                         ],
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
-                            ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
                             ['text' => $protocol == 'trojan' ? '☑️ trojan' : 'trojan', 'callback_data' => "wizwizch"],
                             ['text' => $protocol == 'vless' ? '☑️ vless' : 'vless', 'callback_data' => "wizwizch"],
                         ],
@@ -1489,38 +1487,36 @@ function getUserOrderDetailKeys($id){
                     
                 }else{
                     $keyboard = [
-                        [
-            			    ['text' => $userId, 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => "User ID", 'callback_data' => "wizwizch"],
+							['text' => $userId, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => $firstName, 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => "First Name", 'callback_data' => "wizwizch"],
+							['text' => $firstName, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => "Buying agent", 'callback_data' => "wizwizch"],
+							['text' => $isAgentBought, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
                             ['text' => $protocol == 'trojan' ? '☑️ trojan' : 'trojan', 'callback_data' => "wizwizch"],
                             ['text' => $protocol == 'vmess' ? '☑️ vmess' : 'vmess', 'callback_data' => "wizwizch"],
                             ['text' => $protocol == 'vless' ? '☑️ vless' : 'vless', 'callback_data' => "wizwizch"],
@@ -1536,38 +1532,36 @@ function getUserOrderDetailKeys($id){
             }else {
                 if($netType == "grpc"){
                     $keyboard = [
-                        [
-            			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "UserID", 'callback_data' => "wizwizch"],
+                        [            			    
+                            ['text' => "User ID", 'callback_data' => "wizwizch"],
+							['text' => $userId, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => $firstName, 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => "First Name", 'callback_data' => "wizwizch"],
+							['text' => $firstName, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => "Buying agent", 'callback_data' => "wizwizch"],
+							['text' => $isAgentBought, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
                             ['text' => $protocol == 'vmess' ? '☑️ vmess' : 'vmess', 'callback_data' => "wizwizch"],
                             ['text' => $protocol == 'vless' ? '☑️ vless' : 'vless', 'callback_data' => "wizwizch"],
                         ],
@@ -1581,38 +1575,36 @@ function getUserOrderDetailKeys($id){
                 }
                 elseif($netType == "tcp" && $security == "xtls"){
                     $keyboard = [
-                        [
-            			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "UserID", 'callback_data' => "wizwizch"],
+                        [            			    
+                            ['text' => "User ID", 'callback_data' => "wizwizch"],
+							['text' => $userId, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => $firstName, 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => "First Name", 'callback_data' => "wizwizch"],
+							['text' => $firstName, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => "Buying agent", 'callback_data' => "wizwizch"],
+							['text' => $isAgentBought, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
                             ['text' => $protocol == 'trojan' ? '☑️ trojan' : 'trojan', 'callback_data' => "wizwizch"],
                             ['text' => $protocol == 'vless' ? '☑️ vless' : 'vless', 'callback_data' => "wizwizch"],
                         ],
@@ -1625,33 +1617,33 @@ function getUserOrderDetailKeys($id){
                 }
                 else{
                     $keyboard = [
-                        [
-            			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "UserID", 'callback_data' => "wizwizch"],
+                        [            			    
+                            ['text' => "User ID", 'callback_data' => "wizwizch"],
+							['text' => $userId, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                            ['text' => "First name", 'callback_data' => "wizwizch"],
+                        [            			    
+                            ['text' => "First Name", 'callback_data' => "wizwizch"],
+							['text' => $firstName, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => "Buying agent", 'callback_data' => "wizwizch"],
+							['text' => $isAgentBought, 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
@@ -1676,38 +1668,36 @@ function getUserOrderDetailKeys($id){
             }
         }else{
             $keyboard = [
-                [
-    			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                    ['text' => "UserID", 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                    ['text' => "First Name", 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
-                    ['text' => "Buying agent", 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => "$name", 'callback_data' => "wizwizch"],
-                    ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => "$date ", 'callback_data' => "wizwizch"],
-                    ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
-                    ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
-                    ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
-    			],
+                [            			    
+                            ['text' => "User ID", 'callback_data' => "wizwizch"],
+							['text' => $userId, 'callback_data' => "wizwizch"],
+                        ],
+                        [            			    
+                            ['text' => "First Name", 'callback_data' => "wizwizch"],
+							['text' => $firstName, 'callback_data' => "wizwizch"],
+                        ],
+                        [            			    
+                            ['text' => "Buying agent", 'callback_data' => "wizwizch"],
+							['text' => $isAgentBought, 'callback_data' => "wizwizch"],
+                        ],
+                        [            			    
+                            ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
+                        ],
+                        [            			    
+                            ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
+                        ],
+                        [            			    
+                            ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        ],
+                        [            			    
+                            ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
+            			],
     			[
                     ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                ],
-                [
                     ['text' => " $protocol ☑️", 'callback_data' => "wizwizch"],
                 ],
                 [
@@ -1861,26 +1851,24 @@ function getOrderDetailKeys($from_id, $id){
             if($protocol == 'trojan') {
                 if($security == "xtls"){
                     $keyboard = [
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [           			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
                             ['text' => $protocol == 'trojan' ? '☑️ trojan' : 'trojan', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_trojan":"changeProtocolIsDisable")],
                             ['text' => $protocol == 'vless' ? '☑️ vless' : 'vless', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_vless":"changeProtocolIsDisable")],
                         ],
@@ -1894,26 +1882,24 @@ function getOrderDetailKeys($from_id, $id){
                     if(count($temp)>0) array_push($keyboard, $temp);
                 }else{
                     $keyboard = [
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [           			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
                             ['text' => $protocol == 'trojan' ? '☑️ trojan' : 'trojan', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_trojan":"changeProtocolIsDisable")],
                             ['text' => $protocol == 'vmess' ? '☑️ vmess' : 'vmess', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_vmess":"changeProtocolIsDisable")],
                             ['text' => $protocol == 'vless' ? '☑️ vless' : 'vless', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_vless":"changeProtocolIsDisable")],
@@ -1931,26 +1917,24 @@ function getOrderDetailKeys($from_id, $id){
             }else {
                 if($netType == "grpc"){
                     $keyboard = [
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [           			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
                             ['text' => $protocol == 'vmess' ? '☑️ vmess' : 'vmess', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_vmess":"changeProtocolIsDisable")],
                             ['text' => $protocol == 'vless' ? '☑️ vless' : 'vless', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_vless":"changeProtocolIsDisable")],
                         ]
@@ -1966,26 +1950,24 @@ function getOrderDetailKeys($from_id, $id){
                 }
                 elseif($netType == "tcp" && $security == "xtls"){
                     $keyboard = [
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [           			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                        ],
-                        [
                             ['text' => $protocol == 'trojan' ? '☑️ trojan' : 'trojan', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_trojan":"changeProtocolIsDisable")],
                             ['text' => $protocol == 'vless' ? '☑️ vless' : 'vless', 'callback_data' => ($botState['changeProtocolState']=="on"?"changeAccProtocol{$fid}_{$id}_vless":"changeProtocolIsDisable")],
                         ]
@@ -2001,21 +1983,21 @@ function getOrderDetailKeys($from_id, $id){
                 }
                 else{
                     $keyboard = [
-                        [
-            			    ['text' => "$name", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$date ", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        [           			    
                             ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
                         ],
-                        [
-            			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
+                        [            			    
                             ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
             			],
                         [
                             ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
@@ -2043,26 +2025,24 @@ function getOrderDetailKeys($from_id, $id){
             }
         }else{
             $keyboard = [
-                [
-    			    ['text' => "$name", 'callback_data' => "wizwizch"],
-                    ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => "$date ", 'callback_data' => "wizwizch"],
-                    ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => "$expire_date ", 'callback_data' => "wizwizch"],
-                    ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
-                ],
-                [
-    			    ['text' => " $leftgb", 'callback_data' => "wizwizch"],
-                    ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
-    			],
+                [            			    
+                            ['text' => $buttonValues['plan_name'], 'callback_data' => "wizwizch"],
+							['text' => "$name", 'callback_data' => "wizwizch"],
+                        ],
+                        [            			    
+                            ['text' => $buttonValues['buy_date'], 'callback_data' => "wizwizch"],
+							['text' => "$date ", 'callback_data' => "wizwizch"],
+                        ],
+                        [           			    
+                            ['text' => $buttonValues['expire_date'], 'callback_data' => "wizwizch"],
+							['text' => "$expire_date ", 'callback_data' => "wizwizch"],
+                        ],
+                        [            			    
+                            ['text' => $buttonValues['volume_left'], 'callback_data' => "wizwizch"],
+							['text' => " $leftgb", 'callback_data' => "wizwizch"],
+            			],
     			[
                     ['text' => $buttonValues['selected_protocol'], 'callback_data' => "wizwizch"],
-                ],
-                [
                     ['text' => " $protocol ☑️", 'callback_data' => "wizwizch"],
                 ]
             ];
