@@ -3,8 +3,8 @@ include_once '../baseInfo.php';
 include_once '../config.php';
 
 
-$sellState=$botState['sellState']=="off"?"خاموش ❌":"روشن ✅";
-$searchState=$botState['searchState']=="off"?"خاموش ❌":"روشن ✅";
+$sellState=$botState['sellState']=="off"?"Off ❌":"On ✅";
+$searchState=$botState['searchState']=="off"?"Off ❌":"On ✅";
 $rewaredTime = ($botState['rewaredTime']??0);
 $rewaredChannel = $botState['rewardChannel'];
 
@@ -35,9 +35,9 @@ if($rewaredTime>0 && $rewaredChannel != null){
         $stmt->close();
 
         $txt = "⁮⁮ ⁮⁮ ⁮⁮ ⁮⁮
-🔰درآمد من در $rewaredTime ساعت گذشته
+🔰My earnings in $rewardedTime last hour
 
-💰مبلغ : $totalRewards تومان
+💰Amount: $totalRewards tokens
 
 ☑️ $channelLock
 

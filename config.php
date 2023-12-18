@@ -165,7 +165,7 @@ if(isset($update->message)){
     $caption = $update->message->caption;
     $chat_id = $update->message->chat->id;
     $last_name = $update->message->from->last_name;
-    $username = $update->message->from->username?? " ندارد ";
+    $username = $update->message->from->username?? "does not have";
     $message_id = $update->message->message_id;
     $forward_from_name = $update->message->reply_to_message->forward_sender_name;
     $forward_from_id = $update->message->reply_to_message->forward_from->id;
@@ -178,7 +178,7 @@ if(isset($update->callback_query)){
     $message_id = $update->callback_query->message->message_id;
     $chat_id = $update->callback_query->message->chat->id;
     $chat_type = $update->callback_query->message->chat->type;
-    $username = $update->callback_query->from->username?? " ندارد ";
+    $username = $update->callback_query->from->username?? "does not have";
     $from_id = $update->callback_query->from->id;
     $first_name = $update->callback_query->from->first_name;
     $markup = json_decode(json_encode($update->callback_query->message->reply_markup->inline_keyboard),true);
@@ -296,7 +296,7 @@ function getMainKeys(){
         }
     }
     array_push($mainKeys,$temp);
-    if($from_id == $admin || $userInfo['isAdmin'] == true) array_push($mainKeys,[['text'=>"مدیریت ربات ⚙️",'callback_data'=>"managePanel"]]);
+    if($from_id == $admin || $userInfo['isAdmin'] == true) array_push($mainKeys,[['text'=>"Robot management ⚙️",'callback_data'=>"managePanel"]]);
     return json_encode(['inline_keyboard'=>$mainKeys]); 
 }
 function getAgentKeys(){
@@ -353,7 +353,7 @@ function getRejectedAgentList(){
     
     if($list->num_rows>0){
         $keys = array();
-        $keys[] = [['text'=>"آزاد ساختن",'callback_data'=>"wizwizch"],['text'=>"اسم کاربر",'callback_data'=>'wizwizch'],['text'=>"آیدی عددی",'callback_data'=>"wizwizch"]];
+        $keys[] = [['text'=>"make free",'callback_data'=>"wizwizch"],['text'=>"username",'callback_data'=>'wizwizch'],['text'=>"Numeric ID",'callback_data'=>"wizwizch"]];
         while($row = $list->fetch_assoc()){
             $userId = $row['userid'];
             
@@ -405,19 +405,19 @@ function getAgentDetails($userId){
     return json_encode(['inline_keyboard'=>[
         [
             ['text'=>"(" . $todayIncome['count'] . ") " . number_format($todayIncome['total']),'callback_data'=>'wizwizch'],
-            ['text'=>"درآمد امروز",'callback_data'=>'wizwizch']
+            ['text'=>"Today's income",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>"(" . $yesterdayIncome['count'] . ") " . number_format($yesterdayIncome['total']),'callback_data'=>"wizwizch"],
-            ['text'=>"درآمد دیروز",'callback_data'=>"wizwizch"]
+            ['text'=>"Yesterday's income",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>"(" . $lastWeekIncome['count'] . ") " . number_format($lastWeekIncome['total']),'callback_data'=>"wizwizch"],
-            ['text'=>"درآمد یک هفته",'callback_data'=>"wizwizch"]
+            ['text'=>"One week's income",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>"(" . $lastMonthIncome['count'] . ") " . number_format($lastMonthIncome['total']),'callback_data'=>"wizwizch"],
-            ['text'=>"درآمد یک ماه",'callback_data'=>"wizwizch"]
+            ['text'=>"One month's income",'callback_data'=>"wizwizch"]
             ],
         [['text' => $buttonValues['back_button'], 'callback_data' => "agentsList"]]
         ]]);
@@ -460,7 +460,7 @@ function getAgentsList($offset = 0){
     $keys = array();
     if($agentList->num_rows == 0 && $offset == 0) return null;
     
-    $keys[] = [['text'=>"حذف",'callback_data'=>"wizwizch"],['text'=>"درصد تخفیف",'callback_data'=>"wizwizch"],['text'=>"تاریخ نمایندگی",'callback_data'=>"wizwizch"],['text'=>"اسم نماینده",'callback_data'=>"wizwizch"],['text'=>"آیدی عددی",'callback_data'=>"wizwizch"]];
+    $keys[] = [['text'=>"Delete",'callback_data'=>"wizwizch"],['text'=>"discount percent",'callback_data'=>"wizwizch"],['text'=>"Date of representation",'callback_data'=>"wizwizch"],['text'=>"Representative name",'callback_data'=>"wizwizch"],['text'=>"Numeric ID",'callback_data'=>"wizwizch"]];
     if($agentList->num_rows > 0){
         while($row = $agentList->fetch_assoc()){
             $userId = $row['userid'];
@@ -475,16 +475,16 @@ function getAgentsList($offset = 0){
     }
     if($offset == 0 && $limit <= $agentList->num_rows)
         $keys[] = [
-            ['text'=>" »» صفحه بعدی »»",'callback_data'=>"nextAgentList" . ($offset + $limit)]
+            ['text'=>" »» next page »»",'callback_data'=>"nextAgentList" . ($offset + $limit)]
             ];
     elseif($limit <= $agentList->num_rows)
         $keys[] = [
-            ['text'=>" »» صفحه بعدی »»",'callback_data'=>"nextAgentList" . ($offset + $limit)],
-            ['text'=>" «« صفحه قبلی ««",'callback_data'=>"nextAgentList" . ($offset - $limit)]
+            ['text'=>" »» next page »»",'callback_data'=>"nextAgentList" . ($offset + $limit)],
+            ['text'=>" «« previous page ««",'callback_data'=>"nextAgentList" . ($offset - $limit)]
             ];
     elseif($offset != 0)
         $keys[] = [
-            ['text'=>" «« صفحه قبلی ««",'callback_data'=>"nextAgentList" . ($offset - $limit)]
+            ['text'=>" «« previous page ««",'callback_data'=>"nextAgentList" . ($offset - $limit)]
             ];
             
     $keys[] = [['text' => $buttonValues['back_button'], 'callback_data' => "managePanel"]];
@@ -505,7 +505,7 @@ function getAgentDiscounts($agentId){
     $normal = $discounts['normal'];
     $keys[] = [['text'=>" ",'callback_data'=>"wizwizch"],
     ['text'=>$normal . "%",'callback_data'=>"editAgentDiscountNormal" . $agentId . "_0"],
-    ['text'=>"عمومی",'callback_data'=>"wizwizch"]];            
+    ['text'=>"General",'callback_data'=>"wizwizch"]];            
     
     if($botState['agencyPlanDiscount']=="on"){
         foreach($discounts['plans'] as $planId=>$discount){
@@ -538,8 +538,8 @@ function getAgentDiscounts($agentId){
             ['text'=>$info['title'],'callback_data'=>"wizwizch"]];            
         }                
     }
-    if($botState['agencyPlanDiscount']=="on")$keys[] = [['text' => "افزودن تخفیف پلن", 'callback_data' => "addDiscountPlanAgent" . $agentId]];
-    else $keys[] = [['text' => "افزودن تخفیف سرور", 'callback_data' => "addDiscountServerAgent" . $agentId]];
+    if($botState['agencyPlanDiscount']=="on")$keys[] = [['text' => "Add plan discount", 'callback_data' => "addDiscountPlanAgent" . $agentId]];
+    else $keys[] = [['text' => "Add server discount", 'callback_data' => "addDiscountServerAgent" . $agentId]];
     $keys[] = [['text' => $buttonValues['back_button'], 'callback_data' => "agentsList"]];
     return json_encode(['inline_keyboard'=>$keys]);
 }
@@ -611,17 +611,17 @@ function getServerConfigKeys($serverId,$offset = 0){
     $requestHeader = !empty($serverConfig['request_header'])?$serverConfig['request_header']:" ";
     $responseHeader = !empty($serverConfig['response_header'])?$serverConfig['response_header']:" ";
     $security = !empty($serverConfig['security'])?$serverConfig['security']:" ";
-    $portType = $serverConfig['port_type']=="auto"?"خودکار":"تصادفی";
+    $portType = $serverConfig['port_type']=="auto"?"Automatically":"by accident";
     $serverType = " ";
     switch ($serverConfig['type']){
         case "sanaei":
-            $serverType = "سنایی";
+            $serverType = "Senai";
             break;
         case "alireza":
-            $serverType = "علیرضا";
+            $serverType = "Alireza";
             break;
         case "normal":
-            $serverType = "ساده";
+            $serverType = "simple";
             break;
     }
     return json_encode(['inline_keyboard'=>[
@@ -630,27 +630,27 @@ function getServerConfigKeys($serverId,$offset = 0){
             ],
         [
             ['text'=>$cname,'callback_data'=>"editServerName$id"],
-            ['text'=>"❕نام سرور",'callback_data'=>"wizwizch"]
+            ['text'=>"❕Server name",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>$flagwizwiz,'callback_data'=>"editServerFlag$id"],
-            ['text'=>"🚩 پرچم سرور",'callback_data'=>"wizwizch"]
+            ['text'=>"🚩 Server flag",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>$remarkwizwiz,'callback_data'=>"editServerRemark$id"],
-            ['text'=>"📣 ریمارک سرور",'callback_data'=>"wizwizch"]
+            ['text'=>"📣 Remarks server",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>$serverType??" ",'callback_data'=>"changeServerType$id"],
-            ['text'=>"نوعیت سرور",'callback_data'=>"wizwizch"]
+            ['text'=>"Change server",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>$portType,'callback_data'=>"changePortType$id"],
-            ['text'=>"نوعیت پورت",'callback_data'=>"wizwizch"]
+            ['text'=>"Change port",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>$ucount,'callback_data'=>"editServerMax$id"],
-            ['text'=>"ظرفیت سرور",'callback_data'=>"wizwizch"]
+            ['text'=>"Server capacity",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>$sni,'callback_data'=>"editsServersni$id"],
@@ -678,16 +678,16 @@ function getServerConfigKeys($serverId,$offset = 0){
             ['text'=>"reality",'callback_data'=>"wizwizch"],
             ]:[]),
         [
-            ['text'=>"♻️ تغییر آیپی های سرور",'callback_data'=>"changesServerIp$id"],
+            ['text'=>"♻️ Change server IPs",'callback_data'=>"changesServerIp$id"],
             ],
         [
-            ['text'=>"♻️ تغییر security setting",'callback_data'=>"editsServertlsSettings$id"],
+            ['text'=>"♻️ Change security setting",'callback_data'=>"editsServertlsSettings$id"],
             ],
         [
-            ['text'=>"🔅تغییر اطلاعات ورود",'callback_data'=>"changesServerLoginInfo$id"],
+            ['text'=>"🔅Change login information",'callback_data'=>"changesServerLoginInfo$id"],
             ],
         [
-            ['text'=>"✂️ حذف سرور",'callback_data'=>"wizwizdeleteserver$id"],
+            ['text'=>"✂️ Remove the server",'callback_data'=>"wizwizdeleteserver$id"],
             ],
         [['text' => $buttonValues['back_button'], 'callback_data' => "nextServerPage" . $offset]]
         ]]);
@@ -704,9 +704,9 @@ function getServerListKeys($offset = 0){
 
 
     $keys = array();
-    $keys[] = [['text'=>"وضعیت",'callback_data'=>"wizwizch"],['text'=>"تنظیمات",'callback_data'=>"wizwizch"],['text'=>"نوعیت",'callback_data'=>"wizwizch"],['text'=>"سرور",'callback_data'=>"wizwizch"]];
+    $keys[] = [['text'=>"Condition",'callback_data'=>"wizwizch"],['text'=>"Settings",'callback_data'=>"wizwizch"],['text'=>"nature",'callback_data'=>"wizwizch"],['text'=>"server",'callback_data'=>"wizwizch"]];
     if($cats->num_rows == 0){
-        $keys[] = [['text'=>"سروری یافت نشد",'callback_data'=>"wizwizch"]];
+        $keys[] = [['text'=>"No server found",'callback_data'=>"wizwizch"]];
     }else {
         while($cty = $cats->fetch_assoc()){
             $id = $cty['id'];
@@ -720,35 +720,35 @@ function getServerListKeys($offset = 0){
             $stmt->execute();
             $serverTypeInfo= $stmt->get_result()->fetch_assoc();
             $stmt->close(); 
-            $portType = $serverTypeInfo['port_type']=="auto"?"خودکار":"تصادفی";
+            $portType = $serverTypeInfo['port_type']=="auto"?"Automatically":"by accident";
             $serverType = " ";
             switch ($serverTypeInfo['type']){
                 case "sanaei":
-                    $serverType = "سنایی";
+                    $serverType = "Sanaei";
                     break;
                 case "alireza":
-                    $serverType = "علیرضا";
+                    $serverType = "Alireza";
                     break;
                 case "normal":
-                    $serverType = "ساده";
+                    $serverType = "simply";
                     break;
             }
             $keys[] = [['text'=>$state,'callback_data'=>'toggleServerState' . $id . "_" . $offset],['text'=>"⚙️",'callback_data'=>"showServerSettings" . $id . "_" . $offset],['text'=>$serverType??" ",'callback_data'=>"wizwizch"],['text'=>$cname,'callback_data'=>"wizwizch"]];
         } 
     }
     if($offset == 0 && $cats->num_rows >= $limit){
-        $keys[] = [['text'=>" »» صفحه بعدی »»",'callback_data'=>"nextServerPage" . ($offset + $limit)]];
+        $keys[] = [['text'=>" »» next page »»",'callback_data'=>"nextServerPage" . ($offset + $limit)]];
     }
     elseif($cats->num_rows >= $limit){
         $keys[] = [
-            ['text'=>" »» صفحه بعدی »»",'callback_data'=>"nextServerPage" . ($offset + $limit)],
-            ['text'=>" «« صفحه قبلی ««",'callback_data'=>"nextServerPage" . ($offset - $limit)]
+            ['text'=>" »» next page »»",'callback_data'=>"nextServerPage" . ($offset + $limit)],
+            ['text'=>" «« previous page ««",'callback_data'=>"nextServerPage" . ($offset - $limit)]
             ];
     }
     elseif($offset != 0){
-        $keys[] = [['text'=>" «« صفحه قبلی ««",'callback_data'=>"nextServerPage" . ($offset - $limit)]];
+        $keys[] = [['text'=>" «« previous page ««",'callback_data'=>"nextServerPage" . ($offset - $limit)]];
     }
-    $keys[] = [['text'=>'🪙 ثبت سرور جدید','callback_data'=>"addNewServer"]];
+    $keys[] = [['text'=>'🪙 Register a new server','callback_data'=>"addNewServer"]];
     $keys[] = [['text' => $buttonValues['back_button'], 'callback_data' => "managePanel"]];
     return json_encode(['inline_keyboard'=>$keys]);
 }
@@ -763,9 +763,9 @@ function getCategoriesKeys($offset = 0){
 
 
     $keys = array();
-    $keys[] = [['text'=>"حذف",'callback_data'=>"wizwizch"],['text'=>"اسم دسته",'callback_data'=>"wizwizch"]];
+    $keys[] = [['text'=>"Delete",'callback_data'=>"wizwizch"],['text'=>"category name",'callback_data'=>"wizwizch"]];
     if($cats->num_rows == 0){
-        $keys[] = [['text'=>"دسته بندی یافت نشد",'callback_data'=>"wizwizch"]];
+        $keys[] = [['text'=>"Category not found",'callback_data'=>"wizwizch"]];
     }else {
         while($cty = $cats->fetch_assoc()){
             $id = $cty['id'];
@@ -775,19 +775,19 @@ function getCategoriesKeys($offset = 0){
     }
     
     if($offset == 0 && $cats->num_rows >= $limit){
-        $keys[] = [['text'=>" »» صفحه بعدی »»",'callback_data'=>"nextCategoryPage" . ($offset + $limit)]];
+        $keys[] = [['text'=>" »» next page »»",'callback_data'=>"nextCategoryPage" . ($offset + $limit)]];
     }
     elseif($cats->num_rows >= $limit){
         $keys[] = [
-            ['text'=>" »» صفحه بعدی »»",'callback_data'=>"nextCategoryPage" . ($offset + $limit)],
-            ['text'=>" «« صفحه قبلی ««",'callback_data'=>"nextCategoryPage" . ($offset - $limit)]
+            ['text'=>" »» next page »»",'callback_data'=>"nextCategoryPage" . ($offset + $limit)],
+            ['text'=>" «« previous page ««",'callback_data'=>"nextCategoryPage" . ($offset - $limit)]
             ];
     }
     elseif($offset != 0){
-        $keys[] = [['text'=>" «« صفحه قبلی ««",'callback_data'=>"nextCategoryPage" . ($offset - $limit)]];
+        $keys[] = [['text'=>" «« previous page ««",'callback_data'=>"nextCategoryPage" . ($offset - $limit)]];
     }
     
-    $keys[] = [['text'=>'➕ افزودن دسته جدید','callback_data'=>"addNewCategory"]];
+    $keys[] = [['text'=>'➕ Add new category','callback_data'=>"addNewCategory"]];
     $keys[] = [['text' => $buttonValues['back_button'], 'callback_data' => "managePanel"]];
     return json_encode(['inline_keyboard'=>$keys]);
 }
@@ -823,67 +823,67 @@ function getGateWaysKeys(){
     return json_encode(['inline_keyboard'=>[
         [
             ['text'=>(!empty($paymentKeys['bankAccount'])?$paymentKeys['bankAccount']:" "),'callback_data'=>"changePaymentKeysbankAccount"],
-            ['text'=>"شماره حساب",'callback_data'=>"wizwizch"]
+            ['text'=>"account number",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>(!empty($paymentKeys['holderName'])?$paymentKeys['holderName']:" "),'callback_data'=>"changePaymentKeysholderName"],
-            ['text'=>"دارنده حساب",'callback_data'=>"wizwizch"]
+            ['text'=>"The account holder",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>(!empty($paymentKeys['nowpayment'])?$paymentKeys['nowpayment']:" "),'callback_data'=>"changePaymentKeysnowpayment"],
-            ['text'=>"کد درگاه nowPayment",'callback_data'=>"wizwizch"]
+            ['text'=>"Port code nowPayment",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>(!empty($paymentKeys['zarinpal'])?$paymentKeys['zarinpal']:" "),'callback_data'=>"changePaymentKeyszarinpal"],
-            ['text'=>"کد درگاه زرین پال",'callback_data'=>"wizwizch"]
+            ['text'=>"Zarin Pal port code",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>(!empty($paymentKeys['nextpay'])?$paymentKeys['nextpay']:" "),'callback_data'=>"changePaymentKeysnextpay"],
-            ['text'=>"کد درگاه نکست پی",'callback_data'=>"wizwizch"]
+            ['text'=>"NextPay port code",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>(!empty($paymentKeys['tronwallet'])?$paymentKeys['tronwallet']:" "),'callback_data'=>"changePaymentKeystronwallet"],
-            ['text'=>"آدرس والت ترون",'callback_data'=>"wizwizch"]
+            ['text'=>"TRON address",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$weSwapState,'callback_data'=>"changeGateWaysweSwapState"],
-            ['text'=>"درگاه وی سواپ",'callback_data'=>"wizwizch"]
+            ['text'=>"We swap port",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$cartToCartState,'callback_data'=>"changeGateWayscartToCartState"],
-            ['text'=>"کارت به کارت",'callback_data'=>"wizwizch"]
+            ['text'=>"Card by card",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$nextpay,'callback_data'=>"changeGateWaysnextpay"],
-            ['text'=>"درگاه نکست پی",'callback_data'=>"wizwizch"]
+            ['text'=>"NextPay door",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$zarinpal,'callback_data'=>"changeGateWayszarinpal"],
-            ['text'=>"درگاه زرین پال",'callback_data'=>"wizwizch"]
+            ['text'=>"Zarin Pal Gate",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$nowPaymentWallet,'callback_data'=>"changeGateWaysnowPaymentWallet"],
-            ['text'=>"درگاه NowPayment کیف پول",'callback_data'=>"wizwizch"]
+            ['text'=>"NowPayment wallet portal",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$nowPaymentOther,'callback_data'=>"changeGateWaysnowPaymentOther"],
-            ['text'=>"درگاه NowPayment سایر",'callback_data'=>"wizwizch"]
+            ['text'=>"Other NowPayment gateways",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$tronWallet,'callback_data'=>"changeGateWaystronWallet"],
-            ['text'=>"درگاه ترون",'callback_data'=>"wizwizch"]
+            ['text'=>"Tron Wallet",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$walletState,'callback_data'=>"changeGateWayswalletState"],
-            ['text'=>"کیف پول",'callback_data'=>"wizwizch"]
+            ['text'=>"wallet state",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$rewaredChannel,'callback_data'=>'editRewardChannel'],
-            ['text'=>"کانال گزارش درآمد",'callback_data'=>'wizwizch']
+            ['text'=>"Reward channel",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$lockChannel,'callback_data'=>'editLockChannel'],
-            ['text'=>"کانال قفل",'callback_data'=>'wizwizch']
+            ['text'=>"channel lock",'callback_data'=>'wizwizch']
             ],
         [['text'=>$buttonValues['back_button'],'callback_data'=>"managePanel"]]
         ]]);
@@ -922,17 +922,17 @@ function getBotSettingKeys(){
     $sellState = $botState['sellState']=="on"?$buttonValues['on']:$buttonValues['off'];
     $robotState = $botState['botState']=="on"?$buttonValues['on']:$buttonValues['off'];
     $searchState = $botState['searchState']=="on"?$buttonValues['on']:$buttonValues['off'];
-    $updateConnectionState = $botState['updateConnectionState']=="robot"?"از روی ربات":"از روی سایت";
-    $rewaredTime = ($botState['rewaredTime']??0) . " ساعت";
+    $updateConnectionState = $botState['updateConnectionState']=="robot"?"From the robot":"From the site";
+    $rewaredTime = ($botState['rewaredTime']??0) . " watch";
     switch($botState['remark']){
         case "digits":
-            $remarkType = "عدد رندم 5 حرفی";
+            $remarkType = "5 letter random number";
             break;
         case "manual":
-            $remarkType = "توسط کاربر";
+            $remarkType = "by the user";
             break;
         default:
-            $remarkType = "آیدی و عدد رندوم";
+            $remarkType = "ID and random number";
             break;
     }
     
@@ -944,107 +944,107 @@ function getBotSettingKeys(){
     $stmt->close();
     return json_encode(['inline_keyboard'=>[
         [
-            ['text'=>"🎗 بنر بازاریابی 🎗",'callback_data'=>"inviteSetting"]
+            ['text'=>"🎗 Marketing banner 🎗",'callback_data'=>"inviteSetting"]
             ],
         [
             ['text'=> $updateConnectionState,'callback_data'=>"changeUpdateConfigLinkState"],
-            ['text'=>"آپدیت کانفیگ",'callback_data'=>"wizwizch"]
+            ['text'=>"Config update",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=> $agency,'callback_data'=>"changeBotagencyState"],
-            ['text'=>"نمایندگی",'callback_data'=>"wizwizch"]
+            ['text'=>"Representation",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=> $agencyPlanDiscount,'callback_data'=>"changeBotagencyPlanDiscount"],
-            ['text'=>"نوع تخفیف نمایندگی",'callback_data'=>"wizwizch"]
+            ['text'=>"Type of agency discount",'callback_data'=>"wizwizch"]
             ],
         [
             ['text'=>$individualExistence,'callback_data'=>"changeBotindividualExistence"],
-            ['text'=>"موجودی اختصاصی",'callback_data'=>"wizwizch"]
+            ['text'=>"Dedicated inventory",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$sharedExistence,'callback_data'=>"changeBotsharedExistence"],
-            ['text'=>"موجودی اشتراکی",'callback_data'=>"wizwizch"]
+            ['text'=>"Shared inventory",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$testAccount,'callback_data'=>"changeBottestAccount"],
-            ['text'=>"اکانت تست",'callback_data'=>"wizwizch"]
+            ['text'=>"Test account",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$changeProtocole,'callback_data'=>"changeBotchangeProtocolState"],
-            ['text'=>"تغییر پروتکل",'callback_data'=>"wizwizch"]
+            ['text'=>"Protocol change",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$renewAccount,'callback_data'=>"changeBotrenewAccountState"],
-            ['text'=>"تمدید سرویس",'callback_data'=>"wizwizch"]
+            ['text'=>"Service extension",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$plandelkhahwiz,'callback_data'=>"changeBotplandelkhahState"],
-            ['text'=>"پلن دلخواه",'callback_data'=>"wizwizch"]
+            ['text'=>"Desired plan",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$switchLocation,'callback_data'=>"changeBotswitchLocationState"],
-            ['text'=>"تغییر لوکیشن",'callback_data'=>"wizwizch"]
+            ['text'=>"change location",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$increaseTime,'callback_data'=>"changeBotincreaseTimeState"],
-            ['text'=>"افزایش زمان",'callback_data'=>"wizwizch"]
+            ['text'=>"Increase time",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$increaseVolume,'callback_data'=>"changeBotincreaseVolumeState"],
-            ['text'=>"افزایش حجم",'callback_data'=>"wizwizch"]
+            ['text'=>"volume increase",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$requirePhone,'callback_data'=>"changeBotrequirePhone"],
-            ['text'=>"تأیید شماره",'callback_data'=>"wizwizch"]
+            ['text'=>"Verification number",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$requireIranPhone,'callback_data'=>"changeBotrequireIranPhone"],
-            ['text'=>"تأیید شماره ایرانی",'callback_data'=>"wizwizch"]
+            ['text'=>"Verification of Iranian number",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$sellState,'callback_data'=>"changeBotsellState"],
-            ['text'=>"فروش",'callback_data'=>"wizwizch"]
+            ['text'=>"sale",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$robotState,'callback_data'=>"changeBotbotState"],
-            ['text'=>"وضعیت ربات",'callback_data'=>"wizwizch"]
+            ['text'=>"Robot status",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$subLink,'callback_data'=>"changeBotsubLinkState"],
-            ['text'=>"لینک ساب و مشخصات وب",'callback_data'=>"wizwizch"]
+            ['text'=>"Sub link and web profile",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$configLink,'callback_data'=>"changeBotconfigLinkState"],
-            ['text'=>"لینک کانفیگ",'callback_data'=>"wizwizch"]
+            ['text'=>"Config link",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$searchState,'callback_data'=>"changeBotsearchState"],
-            ['text'=>"مشخصات کانفیگ",'callback_data'=>"wizwizch"]
+            ['text'=>"Config specifications",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$renewConfigLink,'callback_data'=>"changeBotrenewConfigLinkState"],
-            ['text'=>"دریافت لینک جدید",'callback_data'=>"wizwizch"]
+            ['text'=>"Get a new link",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$updateConfigLink,'callback_data'=>"changeBotupdateConfigLinkState"],
-            ['text'=>"بروز رسانی لینک",'callback_data'=>"wizwizch"]
+            ['text'=>"Link update",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$qrConfig,'callback_data'=>"changeBotqrConfigState"],
-            ['text'=>"کیو آر کد کانفیگ",'callback_data'=>"wizwizch"]
+            ['text'=>"QR code config",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$qrSub,'callback_data'=>"changeBotqrSubState"],
-            ['text'=>"کیو آر کد ساب",'callback_data'=>"wizwizch"]
+            ['text'=>"QR code sub",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$remarkType,'callback_data'=>"changeConfigRemarkType"],
-            ['text'=>"نوع ریمارک",'callback_data'=>"wizwizch"]
+            ['text'=>"Remark type",'callback_data'=>"wizwizch"]
         ],
         [
             ['text'=>$rewaredTime,'callback_data'=>'editRewardTime'],
-            ['text'=>"ارسال گزارش درآمد", 'callback_data'=>'wizwizch']
+            ['text'=>"Submit income report", 'callback_data'=>'wizwizch']
             ],
         [['text'=>$buttonValues['back_button'],'callback_data'=>"managePanel"]]
         ]]);
@@ -1079,7 +1079,7 @@ function getBotReportKeys(){
     
     $stmt = $connection->prepare("SELECT SUM(price) as total FROM `pays` WHERE `state` = 'paid' OR `state` = 'approved'");
     $stmt->execute();
-    $totalRewards = number_format($stmt->get_result()->fetch_assoc()['total']) . " تومان";
+    $totalRewards = number_format($stmt->get_result()->fetch_assoc()['total']) . " Token";
     $stmt->close();
     
     
@@ -1090,62 +1090,62 @@ function getBotReportKeys(){
     $stmt = $connection->prepare("SELECT SUM(price) as total FROM `pays` WHERE `request_date` > ? AND (`state` = 'paid' OR `state` = 'approved')");
     $stmt->bind_param("i", $dayTime);
     $stmt->execute();
-    $monthReward = number_format($stmt->get_result()->fetch_assoc()['total']) . " تومان";
+    $monthReward = number_format($stmt->get_result()->fetch_assoc()['total']) . " Token";
     $stmt->close();
     
     $dayTime = strtotime("-" . (date("w")+1) . " days");
     $stmt = $connection->prepare("SELECT SUM(price) as total FROM `pays` WHERE `request_date` > ?  AND (`state` = 'paid' OR `state` = 'approved')");
     $stmt->bind_param("i", $dayTime);
     $stmt->execute();
-    $weekReward = number_format($stmt->get_result()->fetch_assoc()['total']) . " تومان";
+    $weekReward = number_format($stmt->get_result()->fetch_assoc()['total']) . " Token";
     $stmt->close();
     
     $dayTime = strtotime("today");
     $stmt = $connection->prepare("SELECT SUM(price) as total FROM `pays` WHERE `request_date` > ? AND (`state` = 'paid' OR `state` = 'approved')");
     $stmt->bind_param("i", $dayTime);
     $stmt->execute();
-    $dayReward = number_format($stmt->get_result()->fetch_assoc()['total']) . " تومان";
+    $dayReward = number_format($stmt->get_result()->fetch_assoc()['total']) . " Token";
     $stmt->close();
     
     return json_encode(['inline_keyboard'=>[
         [
             ['text'=>$allUsers,'callback_data'=>'wizwizch'],
-            ['text'=>"تعداد کل کاربران",'callback_data'=>'wizwizch']
+            ['text'=>"Total number of users",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$allOrders,'callback_data'=>'wizwizch'],
-            ['text'=>"کل محصولات خریداری شده",'callback_data'=>'wizwizch']
+            ['text'=>"All products purchased",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$allServers,'callback_data'=>'wizwizch'],
-            ['text'=>"تعداد سرورها",'callback_data'=>'wizwizch']
+            ['text'=>"Number of servers",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$allCategories,'callback_data'=>'wizwizch'],
-            ['text'=>"تعداد دسته ها",'callback_data'=>'wizwizch']
+            ['text'=>"Number of categories",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$allPlans,'callback_data'=>'wizwizch'],
-            ['text'=>"تعداد پلن ها",'callback_data'=>'wizwizch']
+            ['text'=>"Number of plans",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$totalRewards,'callback_data'=>'wizwizch'],
-            ['text'=>"درآمد کل",'callback_data'=>'wizwizch']
+            ['text'=>"Total revenue",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$dayReward,'callback_data'=>'wizwizch'],
-            ['text'=>"درآمد امروز",'callback_data'=>'wizwizch']
+            ['text'=>"Today's income",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$weekReward,'callback_data'=>'wizwizch'],
-            ['text'=>"درآمد هفته",'callback_data'=>'wizwizch']
+            ['text'=>"weekly income",'callback_data'=>'wizwizch']
             ],
         [
             ['text'=>$monthReward,'callback_data'=>'wizwizch'],
-            ['text'=>"درآمد ماه",'callback_data'=>'wizwizch']
+            ['text'=>"monthly income",'callback_data'=>'wizwizch']
             ],
         [
-            ['text'=>"برگشت به مدیریت",'callback_data'=>'managePanel']
+            ['text'=>"Back to management",'callback_data'=>'managePanel']
             ]
         ]]);
 }
@@ -1162,9 +1162,9 @@ function getAdminsKeys(){
             $keys[] = [['text'=>"❌",'callback_data'=>"delAdmin" . $user['userid']],['text'=>$user['name'], "callback_data"=>"wizwizch"]];
         }
     }else{
-        $keys[] = [['text'=>"لیست ادمین ها خالی است ❕",'callback_data'=>"wizwizch"]];
+        $keys[] = [['text'=>"The list of admins is empty ❕",'callback_data'=>"wizwizch"]];
     }
-    $keys[] = [['text'=>"➕ افزودن ادمین",'callback_data'=>"addNewAdmin"]];
+    $keys[] = [['text'=>"➕ Add admin",'callback_data'=>"addNewAdmin"]];
     $keys[] = [['text'=>$buttonValues['back_button'],'callback_data'=>"managePanel"]];
     return json_encode(['inline_keyboard'=>$keys]);
 }
@@ -1177,7 +1177,7 @@ function getUserInfoKeys($userId){
     $stmt->close();
     if($userCount->num_rows > 0){
         $userInfos = $userCount->fetch_assoc();
-        $userWallet = number_format($userInfos['wallet']) . " تومان";
+        $userWallet = number_format($userInfos['wallet']) . " token";
         
         $stmt = $connection->prepare("SELECT COUNT(amount) as count, SUM(amount) as total FROM `orders_list` WHERE `userid` = ?");
         $stmt->bind_param("i", $userId);
@@ -1185,7 +1185,7 @@ function getUserInfoKeys($userId){
         $info = $stmt->get_result()->fetch_assoc();
         
         $boughtService = $info['count'];
-        $totalBoughtPrice = number_format($info['total']) . " تومان";
+        $totalBoughtPrice = number_format($info['total']) . " token";
         
         $userDetail = bot('getChat',['chat_id'=>$userId])->result;
         $userUserName = $userDetail->username;
@@ -1194,23 +1194,23 @@ function getUserInfoKeys($userId){
         return json_encode(['inline_keyboard'=>[
             [
                 ['text'=>$userUserName??" ",'url'=>"t.me/$userUserName"],
-                ['text'=>"یوزرنیم",'callback_data'=>"wizwizch"]
+                ['text'=>"Username",'callback_data'=>"wizwizch"]
                 ],
             [
                 ['text'=>$fullName??" ",'callback_data'=>"wizwizch"],
-                ['text'=>"نام",'callback_data'=>"wizwizch"]
+                ['text'=>"name",'callback_data'=>"wizwizch"]
                 ],
             [
                 ['text'=>$boughtService??" ",'callback_data'=>"wizwizch"],
-                ['text'=>"سرویس ها",'callback_data'=>"wizwizch"]
+                ['text'=>"Services",'callback_data'=>"wizwizch"]
                 ],
             [
                 ['text'=>$totalBoughtPrice??" ",'callback_data'=>"wizwizch"],
-                ['text'=>"مبلغ خرید",'callback_data'=>"wizwizch"]
+                ['text'=>"Purchase amount",'callback_data'=>"wizwizch"]
                 ],
             [
                 ['text'=>$userWallet??" ",'callback_data'=>"wizwizch"],
-                ['text'=>"موجودی کیف پول",'callback_data'=>"wizwizch"]
+                ['text'=>"Wallet balance",'callback_data'=>"wizwizch"]
                 ],
             [
                 ['text'=>$buttonValues['back_button'],'callback_data'=>"mainMenu"]
@@ -1227,12 +1227,12 @@ function getDiscountCodeKeys(){
     $stmt->close();
     $keys = array();
     if($list->num_rows > 0){
-        $keys[] = [['text'=>'حذف','callback_data'=>"wizwizch"],['text'=>"استفاده هر یوزر",'callback_data'=>"wizwizch"],['text'=>"تاریخ ختم",'callback_data'=>"wizwizch"],['text'=>"تعداد استفاده",'callback_data'=>"wizwizch"],['text'=>"مقدار تخفیف",'callback_data'=>"wizwizch"],['text'=>"کد تخفیف",'callback_data'=>"wizwizch"]];
+        $keys[] = [['text'=>'Delete','callback_data'=>"wizwizch"],['text'=>"Use by each user",'callback_data'=>"wizwizch"],['text'=>"End date",'callback_data'=>"wizwizch"],['text'=>"Number of uses",'callback_data'=>"wizwizch"],['text'=>"Discount amount",'callback_data'=>"wizwizch"],['text'=>"discount code",'callback_data'=>"wizwizch"]];
         while($row = $list->fetch_assoc()){
-            $date = $row['expire_date']!=0?jdate("Y/n/j H:i", $row['expire_date']):"نامحدود";
-            $count = $row['expire_count']!=-1?$row['expire_count']:"نامحدود";
+            $date = $row['expire_date']!=0?jdate("Y/n/j H:i", $row['expire_date']):"unlimited";
+            $count = $row['expire_count']!=-1?$row['expire_count']:"unlimited";
             $amount = $row['amount'];
-            $amount = $row['type'] == 'percent'? $amount."%":$amount = number_format($amount) . " تومان";
+            $amount = $row['type'] == 'percent'? $amount."%":$amount = number_format($amount) . " token";
             $hashId = $row['hash_id'];
             $rowId = $row['id'];
             $canUse = $row['can_use'];
@@ -1240,10 +1240,10 @@ function getDiscountCodeKeys(){
             $keys[] = [['text'=>'❌','callback_data'=>"delDiscount" . $rowId],['text'=>$canUse, 'callback_data'=>"wizwizch"],['text'=>$date,'callback_data'=>"wizwizch"],['text'=>$count,'callback_data'=>"wizwizch"],['text'=>$amount,'callback_data'=>"wizwizch"],['text'=>$hashId,'callback_data'=>'copyHash' . $hashId]];
         }
     }else{
-        $keys[] = [['text'=>"کد تخفیفی یافت نشد",'callback_data'=>"wizwizch"]];
+        $keys[] = [['text'=>"Discount code not found",'callback_data'=>"wizwizch"]];
     }
     
-    $keys[] = [['text'=>"افزودن کد تخفیف",'callback_data'=>"addDiscountCode"]];
+    $keys[] = [['text'=>"Add discount code",'callback_data'=>"addDiscountCode"]];
     $keys[] = [['text'=>$buttonValues['back_button'],'callback_data'=>"managePanel"]];
     return json_encode(['inline_keyboard'=>$keys]);
 }
@@ -1266,9 +1266,9 @@ function getMainMenuButtonsKeys(){
                         ['text'=>$title??" " ,'callback_data'=>"wizwizch"]];
         }
     }else{
-        $keys[] = [['text'=>"دکمه ای یافت نشد ❕",'callback_data'=>"wizwizch"]];
+        $keys[] = [['text'=>"No button found ❕",'callback_data'=>"wizwizch"]];
     }
-    $keys[] = [['text'=>"افزودن دکمه جدید ➕",'callback_data'=>"addNewMainButton"]];
+    $keys[] = [['text'=>"Add new button ➕",'callback_data'=>"addNewMainButton"]];
     $keys[] = [['text'=>$buttonValues['back_button'],'callback_data'=>"managePanel"]];
     return json_encode(['inline_keyboard'=>$keys]);
 }
@@ -1314,31 +1314,31 @@ function getPlanDetailsKeys($planId){
 
         $srvid= $pd['server_id'];
         $keyboard = [
-            ($rahgozar==true?[['text'=>"* نوع پلن: رهگذر *",'callback_data'=>'wizwizch']]:[]),
+            ($rahgozar==true?[['text'=>"* Plan type: Passerby *",'callback_data'=>'wizwizch']]:[]),
             ($rahgozar==true?[
                 ['text'=>$customPath,'callback_data'=>'changeCustomPath' . $id],
-                ['text'=>"Path Custom",'callback_data'=>'wizwizch'],
+                ['text'=>"Custom Path",'callback_data'=>'wizwizch'],
                 ]:[]),
             ($rahgozar==true?[
                 ['text'=>$customPort,'callback_data'=>'changeCustomPort' . $id],
-                ['text'=>"پورت دلخواه",'callback_data'=>'wizwizch'],
+                ['text'=>"Custom Port",'callback_data'=>'wizwizch'],
                 ]:[]),
             ($rahgozar==true?[
                 ['text'=>$customSni,'callback_data'=>'changeCustomSni' . $id],
-                ['text'=>"sni دلخواه",'callback_data'=>'wizwizch'],
+                ['text'=>"Custom SNI",'callback_data'=>'wizwizch'],
                 ]:[]),
-            [['text'=>$name,'callback_data'=>"wizwizplanname$id"],['text'=>"🔮 نام پلن",'callback_data'=>"wizwizch"]],
+            [['text'=>$name,'callback_data'=>"wizwizplanname$id"],['text'=>"🔮 Name of the plan",'callback_data'=>"wizwizch"]],
             ($reality == "true"?[['text'=>$dest,'callback_data'=>"editDestName$id"],['text'=>"dest",'callback_data'=>"wizwizch"]]:[]),
             ($reality == "true"?[['text'=>$serverName,'callback_data'=>"editServerNames$id"],['text'=>"serverNames",'callback_data'=>"wizwizch"]]:[]),
             ($reality == "true"?[['text'=>$spiderX,'callback_data'=>"editSpiderX$id"],['text'=>"spiderX",'callback_data'=>"wizwizch"]]:[]),
             ($reality == "true"?[['text'=>$flow,'callback_data'=>"editFlow$id"],['text'=>"flow",'callback_data'=>"wizwizch"]]:[]),
-            [['text'=>$wizwizplanaccnumber,'callback_data'=>"wizwizch"],['text'=>"🎗 تعداد اکانت های فروخته شده",'callback_data'=>"wizwizch"]],
-            ($pd['inbound_id'] != 0?[['text'=>"$acount",'callback_data'=>"wizwizplanslimit$id"],['text'=>"🚪 تغییر ظرفیت کانفیگ",'callback_data'=>"wizwizch"]]:[]),
-            ($pd['inbound_id'] != 0?[['text'=>$pd['inbound_id'],'callback_data'=>"wizwizplansinobundid$id"],['text'=>"🚪 سطر کانفیگ",'callback_data'=>"wizwizch"]]:[]),
-            [['text'=>"✏️ ویرایش توضیحات",'callback_data'=>"wizwizplaneditdes$id"]],
-            [['text'=>number_format($price) . " تومان",'callback_data'=>"wizwizplanrial$id"],['text'=>"💰 قیمت پلن",'callback_data'=>"wizwizch"]],
-            [['text'=>"♻️ دریافت لیست اکانت ها",'callback_data'=>"wizwizplanacclist$id"]],
-            [['text'=>"✂️ حذف",'callback_data'=>"wizwizplandelete$id"]],
+            [['text'=>$wizwizplanaccnumber,'callback_data'=>"wizwizch"],['text'=>"🎗 Number of accounts sold",'callback_data'=>"wizwizch"]],
+            ($pd['inbound_id'] != 0?[['text'=>"$acount",'callback_data'=>"wizwizplanslimit$id"],['text'=>"🚪 Change the config capacity",'callback_data'=>"wizwizch"]]:[]),
+            ($pd['inbound_id'] != 0?[['text'=>$pd['inbound_id'],'callback_data'=>"wizwizplansinobundid$id"],['text'=>"🚪 config line",'callback_data'=>"wizwizch"]]:[]),
+            [['text'=>"✏️ Edit description",'callback_data'=>"wizwizplaneditdes$id"]],
+            [['text'=>number_format($price) . " token",'callback_data'=>"wizwizplanrial$id"],['text'=>"💰 The price of the plan",'callback_data'=>"wizwizch"]],
+            [['text'=>"♻️ Get a list of accounts",'callback_data'=>"wizwizplanacclist$id"]],
+            [['text'=>"✂️ Delete",'callback_data'=>"wizwizplandelete$id"]],
             [['text' => $buttonValues['back_button'], 'callback_data' =>"plansList$srvid"]]
             ];
         return json_encode(['inline_keyboard'=>$keyboard]);
@@ -1367,7 +1367,7 @@ function getUserOrderDetailKeys($id){
         $stmt->close();
 	    $rahgozar = $order['rahgozar'];
         $agentBought = $order['agent_bought'];
-        $isAgentBought = $agentBought == true?"بله":"نخیر";
+        $isAgentBought = $agentBought == true?"Yes":"No";
 
     	if($respd){
     	    $respd = $respd->fetch_assoc(); 
@@ -1448,15 +1448,15 @@ function getUserOrderDetailKeys($id){
                     $keyboard = [
                         [
             			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "آیدی کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "User ID", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                            ['text' => "اسم کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "First Name", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
-                            ['text' => "خرید نماینده", 'callback_data' => "wizwizch"],
+                            ['text' => "Buying agent", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => "$name", 'callback_data' => "wizwizch"],
@@ -1491,15 +1491,15 @@ function getUserOrderDetailKeys($id){
                     $keyboard = [
                         [
             			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "آیدی کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "User ID", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                            ['text' => "اسم کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "First Name", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
-                            ['text' => "خرید نماینده", 'callback_data' => "wizwizch"],
+                            ['text' => "Buying agent", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => "$name", 'callback_data' => "wizwizch"],
@@ -1538,15 +1538,15 @@ function getUserOrderDetailKeys($id){
                     $keyboard = [
                         [
             			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "آیدی کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "UserID", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                            ['text' => "اسم کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "First Name", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
-                            ['text' => "خرید نماینده", 'callback_data' => "wizwizch"],
+                            ['text' => "Buying agent", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => "$name", 'callback_data' => "wizwizch"],
@@ -1583,15 +1583,15 @@ function getUserOrderDetailKeys($id){
                     $keyboard = [
                         [
             			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "آیدی کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "UserID", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                            ['text' => "اسم کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "First Name", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
-                            ['text' => "خرید نماینده", 'callback_data' => "wizwizch"],
+                            ['text' => "Buying agent", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => "$name", 'callback_data' => "wizwizch"],
@@ -1627,15 +1627,15 @@ function getUserOrderDetailKeys($id){
                     $keyboard = [
                         [
             			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                            ['text' => "آیدی کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "UserID", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                            ['text' => "اسم کاربر", 'callback_data' => "wizwizch"],
+                            ['text' => "First name", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
-                            ['text' => "خرید نماینده", 'callback_data' => "wizwizch"],
+                            ['text' => "Buying agent", 'callback_data' => "wizwizch"],
                         ],
                         [
             			    ['text' => "$name", 'callback_data' => "wizwizch"],
@@ -1678,15 +1678,15 @@ function getUserOrderDetailKeys($id){
             $keyboard = [
                 [
     			    ['text' => $userId, 'callback_data' => "wizwizch"],
-                    ['text' => "آیدی کاربر", 'callback_data' => "wizwizch"],
+                    ['text' => "UserID", 'callback_data' => "wizwizch"],
                 ],
                 [
     			    ['text' => $firstName, 'callback_data' => "wizwizch"],
-                    ['text' => "اسم کاربر", 'callback_data' => "wizwizch"],
+                    ['text' => "First Name", 'callback_data' => "wizwizch"],
                 ],
                 [
     			    ['text' => $isAgentBought, 'callback_data' => "wizwizch"],
-                    ['text' => "خرید نماینده", 'callback_data' => "wizwizch"],
+                    ['text' => "Buying agent", 'callback_data' => "wizwizch"],
                 ],
                 [
     			    ['text' => "$name", 'callback_data' => "wizwizch"],
@@ -2201,11 +2201,11 @@ function addBorderImage($add){
 function sumerize($amount){
     $gb = $amount / (1024 * 1024 * 1024);
     if($gb > 1){
-      return round($gb,2) . " گیگابایت"; 
+      return round($gb,2) . " Gigabyte"; 
     }
     else{
         $gb *= 1024;
-        return round($gb,2) . " مگابایت";
+        return round($gb,2) . " megabyte";
     }
 
 }
@@ -2217,7 +2217,7 @@ function sumerize2($amount){
     // }
     // else{
         // $gb *= 1024;
-        // return round($gb,2) . " مگابایت";
+        // return round($gb,2) . " megabyte";
     // }
 
 }

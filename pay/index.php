@@ -6,7 +6,7 @@ include '../config.php';
 //====================//  Get  //==============================
 $hash_id = $_GET['hash_id'];
 if(!isset($_GET['zarinpal']) && !isset($_GET['nowpayment']) && !isset($_GET['nextpay'])){
-    showForm("درگاه پرداخت شناسایی نشد!");
+    showForm("The payment gateway was not recognized!");
     exit();
 }
 
@@ -16,7 +16,7 @@ $stmt->execute();
 $payInfo = $stmt->get_result();
 $stmt->close();
 if(mysqli_num_rows($payInfo)==0){
-    showForm("کد پرداخت یافت نشد");
+    showForm("Payment code not found");
 }else{
     $payParam = $payInfo->fetch_assoc();
     
@@ -40,7 +40,7 @@ if(mysqli_num_rows($payInfo)==0){
     
     
     if($acount == 0 and $inbound_id != 0 && $payType == "BUY_SUB"){
-        showForm('ظرفیت این کانکشن پر شده است');
+        showForm('The capacity of this connection is full');
         exit;
     }
     if($inbound_id == 0 && $payType == "BUY_SUB") {
@@ -51,19 +51,19 @@ if(mysqli_num_rows($payInfo)==0){
         $stmt->close();
 
         if($server_info['ucount'] == 0) {
-            showForm('ظرفیت این سرور پر شده است');
+            showForm('The capacity of this server is full');
             exit;
         }
     }elseif($payType == "BUY_SUB"){
         if($acount != 0 && $acount < $text){
-            showForm("روی این پلن فقط $acount اکانت میشه ساخت");
+            showForm("Only $acount accounts can be created on this plan");
             exit();
         }
     }
     
-    if($payType == "BUY_SUB") $type = "خرید اکانت";
+    if($payType == "BUY_SUB") $type = "Account purchase";
     elseif($payType == "RENEW_ACCOUNT"){
-        $type = "تمدید اکانت";
+        $type = "Account renewal";
         $oid = $payParam['plan_id'];
         $stmt = $connection->prepare("SELECT * FROM `orders_list` WHERE `id` = ?");
         $stmt->bind_param("i", $oid);
@@ -76,10 +76,10 @@ if(mysqli_num_rows($payInfo)==0){
         }
 
     }
-    elseif($payType == "RENEW_SCONFIG") $type = "تمدید اکانت";
-    elseif($payType == "INCREASE_WALLET") $type ="شارژ کیف پول";
-    elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType)) $type = "افزایش زمان اکانت";
-    elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType)) $type = "افزایش حجم اکانت";
+    elseif($payType == "RENEW_SCONFIG") $type = "Account renewal";
+    elseif($payType == "INCREASE_WALLET") $type ="Recharge wallet";
+    elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType)) $type = "Increase account time";
+    elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType)) $type = "Increase account volume";
     
     
     
@@ -161,7 +161,7 @@ if(mysqli_num_rows($payInfo)==0){
             $stmt->close();
             header('location: '.$startGateWayUrl);
         } else {
-            showForm("تراکنش با خطا مواجه شده است");
+            showForm("The transaction has encountered an error");
         }
         
         

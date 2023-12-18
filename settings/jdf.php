@@ -1,4 +1,4 @@
-<?php /* In the name of Allah = بسم اللّه الرّحمن الرّحیم */
+<?php 
 
 /**
  * @فارسی : توابع زمان و تاریخ هجری شمسی (جلالی) در پی اچ پی
@@ -11,9 +11,9 @@
 /*	F	*/
 function jdate($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran', $tr_num = 'fa') {
 
-  $T_sec = 0;/* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
+  $T_sec = 0;  /* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
 
-  if ($time_zone != 'local') date_default_timezone_set(($time_zone === '') ? 'Asia/Tehran' : $time_zone);
+  if ($time_zone != 'local') date_default_timezone_set(($time_zone === '') ? 'Europe/Berlin' : $time_zone);
   $ts = $T_sec + (($timestamp === '') ? time() : tr_num($timestamp));
   $date = explode('_', date('H_i_j_n_O_P_s_w_Y', $ts));
   list($j_y, $j_m, $j_d) = gregorian_to_jalali($date[8], $date[3], $date[2]);
@@ -49,11 +49,11 @@ function jdate($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran',
         break;
 
       case 'a':
-        $out .= ($date[0] < 12) ? 'ق.ظ' : 'ب.ظ';
+        $out .= ($date[0] < 12) ? 'a.m.' : 'p.m.';
         break;
 
       case 'A':
-        $out .= ($date[0] < 12) ? 'قبل از ظهر' : 'بعد از ظهر';
+        $out .= ($date[0] < 12) ? 'Am' : 'Pm';
         break;
 
       case 'b':
@@ -369,7 +369,7 @@ function jstrftime($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehr
         break;
 
       case 'P':
-        $out .= ($date[1] < 12) ? 'ق.ظ' : 'ب.ظ';
+        $out .= ($date[1] < 12) ? 'A.M.' : 'P.M.';
         break;
 
       case 'r':
@@ -522,52 +522,52 @@ function jdate_words($array, $mod = '') {
         $h3 = $h34 = $h4 = '';
         if ($xy3 == 1) {
           $p34 = '';
-          $k34 = array('ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده');
+          $k34 = array('ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen');
           $h34 = $k34[substr($num, 2 - $sl, 2) - 10];
         } else {
           $xy4 = substr($num, 3 - $sl, 1);
           $p34 = ($xy3 == 0 or $xy4 == 0) ? '' : ' و ';
-          $k3 = array('', '', 'بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود');
+          $k3 = array('', '', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety');
           $h3 = $k3[$xy3];
-          $k4 = array('', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه');
+          $k4 = array('', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine');
           $h4 = $k4[$xy4];
         }
         $array[$type] = (($num > 99) ? str_replace(
           array('12', '13', '14', '19', '20'),
-          array('هزار و دویست', 'هزار و سیصد', 'هزار و چهارصد', 'هزار و نهصد', 'دوهزار'),
+          array('one thousand two hundred', 'one thousand and three hundred', 'fourteen hundred', 'one thousand nine hundred', 'Two thousand'),
           substr($num, 0, 2)
         ) . ((substr($num, 2, 2) == '00') ? '' : ' و ') : '') . $h3 . $p34 . $h34 . $h4;
         break;
 
       case 'mm':
-        $key = array('فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند');
+        $key = array('April', 'May', 'June', 'July', 'August', 'September', 'Oktober', 'November', 'December', 'January', 'February', 'March');
         $array[$type] = $key[$num - 1];
         break;
 
       case 'rr':
         $key = array(
-          'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه', 'ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده', 'بیست', 'بیست و یک', 'بیست و دو', 'بیست و سه', 'بیست و چهار', 'بیست و پنج', 'بیست و شش', 'بیست و هفت', 'بیست و هشت', 'بیست و نه', 'سی', 'سی و یک'
+          'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen' ', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty', 'twenty one', 'twenty two', 'twenty three', 'twenty four', 'twenty five', 'twenty six', 'twenty seven', 'twenty eight', 'twenty nine', 'thirty', 'thirty one'
         );
         $array[$type] = $key[$num - 1];
         break;
 
       case 'rh':
-        $key = array('یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه');
+        $key = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
         $array[$type] = $key[$num];
         break;
 
       case 'sh':
-        $key = array('مار', 'اسب', 'گوسفند', 'میمون', 'مرغ', 'سگ', 'خوک', 'موش', 'گاو', 'پلنگ', 'خرگوش', 'نهنگ');
+        $key = array('snake', 'horse', 'sheep', 'monkey', 'chicken', 'dog', 'pig', 'mouse', 'cow', 'leopard', 'rabbit', 'whale');
         $array[$type] = $key[$num % 12];
         break;
 
       case 'mb':
-        $key = array('حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت');
+        $key = array('Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces');
         $array[$type] = $key[$num - 1];
         break;
 
       case 'ff':
-        $key = array('بهار', 'تابستان', 'پاییز', 'زمستان');
+        $key = array('Spring', 'Summer', 'Autumn', 'Winter');
         $array[$type] = $key[(int) ($num / 3.1)];
         break;
 

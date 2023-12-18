@@ -35,8 +35,8 @@ if(time() > $rateLimit){
 if($offset == '-1') exit;
 
 if($offset == '0'){
-    if($messageParam->type == "forwardall") $msg = "عملیات هدایت همگانی شروع شد";
-    else $msg = "عملیات ارسال پیام همگانی شروع شد";
+    if($messageParam->type == "forwardall") $msg = "The public guidance operation began";
+    else $msg = "The operation of sending public messages has started";
     
     bot('sendMessage',[
         'chat_id'=>$admin,
@@ -132,12 +132,12 @@ if( $usersList->num_rows > 1 ) {
     $msgInfo['offset'] = $offset;
     file_put_contents("messagewizwiz.json",json_encode($msgInfo));
 }else{
-    if($messageParam->type == "forwardall") $msg = "عملیات هدایت همگانی با موفقیت انجام شد";
-    else $msg = "عملیات ارسال پیام همگانی با موفقیت انجام شد";
+    if($messageParam->type == "forwardall") $msg = "The operation of redirecting everyone was done successfully";
+    else $msg = "The operation of sending public message was done successfully";
     
     bot('sendMessage',[
         'chat_id'=>$admin,
-        'text'=>$msg . "\nبه " . $offset . " نفر پیامتو فرستادم"
+        'text'=>$msg . "\nto " . $offset . " I sent your message"
         ]);
     $msgInfo['offset'] = -1;
     file_put_contents("messagewizwiz.json",json_encode($msgInfo));

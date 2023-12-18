@@ -17,11 +17,11 @@ while($payParam = $paysList->fetch_assoc()){
     $tronPrice = $payParam['tron_price'];
     $state = $payParam['state'];
     
-    if($payType == "BUY_SUB") $payDescription = "خرید اشتراک";
-    elseif($payType == "RENEW_ACCOUNT") $payDescription = "تمدید اکانت";
-    elseif($payType == "INCREASE_WALLET") $payDescription ="شارژ کیف پول";
-    elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType)) $payDescription = "افزایش زمان اکانت";
-    elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType)) $payDescription = "افزایش حجم اکانت";    
+    if($payType == "BUY_SUB") $payDescription = "Купить подписку";
+    elseif($payType == "RENEW_ACCOUNT") $payDescription = "Продление аккаунта";
+    elseif($payType == "INCREASE_WALLET") $payDescription ="Пополнить кошелек";
+    elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType)) $payDescription = "Увеличить время аккаунта";
+    elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType)) $payDescription = "Увеличить траффик аккаунта";    
 
     
     $result = json_decode(getWebsite($hash_id),true);
@@ -115,7 +115,7 @@ while($payParam = $paysList->fetch_assoc()){
                     include '../phpqrcode/qrlib.php';
                     define('IMAGE_WIDTH',540);
                     define('IMAGE_HEIGHT',540);
-                    sendMessage("پرداخت شما با تکسید آیدی $hash_id با موفقیت انجام شد 🚀 | 😍 در حال ارسال کانفیگ به تلگرام شما ...",null,null,$user_id);
+                    sendMessage("Ваш платеж успешно завершен с идентификатором $hash_id 🚀 | 😍 Отправляю конфигурацию на ваш телеграм...",null,null,$user_id);
 
                     for($i =1; $i<= $accountCount; $i++){
                         $uniqid = generateRandomString(42,$protocol); 
@@ -162,8 +162,8 @@ while($payParam = $paysList->fetch_assoc()){
                             $stmt->bind_param("ii", $price, $user_id);
                             $stmt->execute();
                             $stmt->close();
-                            sendMessage("تراکنش شما با تکسید آیدی $hash_id تأیید شد، ولی اتصال به سرور برقرار نیست، لطفا مدیر رو در جریان بزار\n✅ مبلغ " . number_format($price). " تومان ($tronPrice ترون) به حساب شما اضافه شد",null,null,$user_id);
-                            sendMessage("✅ مبلغ " . number_format($price) . " تومان به کیف پول کاربر $user_id توسط درگاه ترون اضافه شد میخواست کانفیگ بخره، اتصال به سرور برقرار نبود",null,null,$admin);                
+                            sendMessage("Ваша транзакция подтверждена с идентификатором $hash_id, но соединение с сервером не установлено, сообщите об этом администратору." . number_format($price). " Токены ($tronPrice Трон) добавлены в ваш аккаунт",null,null,$user_id);
+                            sendMessage("✅ Количество " . number_format($price) . " токенов добавили в кошелек пользователя $user_id по порту Tron, он хотел настроить, но соединение с сервером не установилось.",null,null,$admin);                
                     
                             exit;
                         }
@@ -172,19 +172,19 @@ while($payParam = $paysList->fetch_assoc()){
                             $stmt->bind_param("ii", $price, $user_id);
                             $stmt->execute();
                             $stmt->close();
-                            sendMessage("تراکنش شما با تکسید آیدی $hash_id تأیید شد، ولی سطری با آیدی $inbound_id تو سرور وجود نداره، مدیر رو در جریان بزار\n✅ مبلغ " . number_format($price). " تومان ($tronPrice ترون) به حساب شما اضافه شد",null,null,$user_id);
-                            sendMessage("✅ مبلغ " . number_format($price) . " تومان به کیف پول کاربر $user_id توسط درگاه ترون اضافه شد میخواست کانفیگ بخره، ولی انباند پیدا نشد",null,null,$admin);                
+                            sendMessage("Ваша транзакция подтверждена с идентификатором $hash_id, но строки с идентификатором $inbound_id на сервере нет, сообщите об этом администратору." . number_format($price). " Токены ($tronPrice Трон) добавлен в ваш аккаунт",null,null,$user_id);
+                            sendMessage("✅ Количество " . number_format($price) . " Tron добавил токены в кошелек пользователя $user_id, он хотел купить конфигурацию, но банк не был найден.",null,null,$admin);                
                     
                     		exit;
                     	}
                     	if(!$response->success){
-                            sendMessage("خطای سرور {$serverInfo['title']}:\n\n" . $response['msg'], null, null, $admin);
+                            sendMessage("Ошибка сервера {$serverInfo['title']}:\n\n" . $response['msg'], null, null, $admin);
                             $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
                             $stmt->bind_param("ii", $price, $user_id);
                             $stmt->execute();
                             $stmt->close();
-                            sendMessage("تراکنش شما با تکسید آیدی $hash_id تأیید شد، ولی خطا داد، لطفا سریع به مدیر بگو\n✅ مبلغ " . number_format($price). " تومان ($tronPrice ترون) به حساب شما اضافه شد",null,null,$user_id);
-                            sendMessage("✅ مبلغ " . number_format($price) . " تومان به کیف پول کاربر $user_id توسط درگاه اضافه شد میخواست کانفیگ بخره، ولی خطا داد",null,null,$admin);                
+                            sendMessage("Ваша транзакция была подтверждена с идентификатором $hash_id, но выдала ошибку, немедленно сообщите об этом администратору. " . number_format($price). " Токены ($tronPrice Tron) добавлены в ваш аккаунт.",null,null,$user_id);
+                            sendMessage("✅ Сумма ". number_format($price) ." токенов была добавлена в кошелек пользователя $user_id по порту. Он хотел купить конфигурацию, но выдала ошибку.",null,null,$admin);                
                             exit;
                         }
                     
@@ -193,12 +193,11 @@ while($payParam = $paysList->fetch_assoc()){
                         $subLink = $botState['subLinkState']=="on"?$botUrl . "settings/subLink.php?token=" . $token:"";
                 
                         foreach($vraylink as $vray_link){
-                            $acc_text = "
-                😍 سفارش جدید شما
-                📡 پروتکل: $protocol
-                🔮 نام سرویس: $remark
-                🔋حجم سرویس: $volume گیگ
-                ⏰ مدت سرویس: $days روز
+                            $acc_text = "😍 Ваш новый заказ
+                 📡 Протокол: $protocol
+                 🔮 Имя сервиса: $remark
+                 🔋 Объем услуги: $volume Гб
+                 ⏰ Продолжительность услуги: $days .
                 ".
                 ($botState['configLinkState'] != "off"?
                 "
@@ -230,7 +229,7 @@ while($payParam = $paysList->fetch_assoc()){
                             imagedestroy($backgroundImage);
                             imagedestroy($qrImage);
                 
-                        	sendPhoto($botUrl . "settings/" . $file, $acc_text,json_encode(['inline_keyboard'=>[[['text'=>"صفحه اصلی 🏘",'callback_data'=>"mainMenu"]]]]),"HTML", $user_id);
+                        	sendPhoto($botUrl . "settings/" . $file, $acc_text,json_encode(['inline_keyboard'=>[[['text'=>"Главная страница 🏘",'callback_data'=>"mainMenu"]]]]),"HTML", $user_id);
                             unlink($file);
                         }
                         $vray_link = json_encode($vraylink);
@@ -278,7 +277,7 @@ while($payParam = $paysList->fetch_assoc()){
                         $stmt->execute();
                         $stmt->close();
                          
-                        sendMessage("تبریک یکی از زیر مجموعه های شما خرید انجام داد شما مبلغ " . number_format($inviteAmount) . " تومان جایزه دریافت کردید",null,null,$inviterId);
+                        sendMessage("Поздравляем, одно из ваших подмножеств совершило покупку. " . number_format($inviteAmount) . " Вы получили вознаграждение в размере руб.",null,null,$inviterId);
                     }
                 
                     $user_info = Bot('getChat',['chat_id'=>$user_id])->result;
@@ -287,21 +286,21 @@ while($payParam = $paysList->fetch_assoc()){
                     
                     $keys = json_encode(['inline_keyboard'=>[
                         [
-                            ['text'=>"خرید از درگاه ترون 💞",'callback_data'=>'wizwizch'],
+                            ['text'=>"Купить на портале Tron 💞",'callback_data'=>'wizwizch'],
                             ],
                         ]]);
                 sendMessage("
-                👨‍👦‍👦 خرید ( درگاه ترون )
+                👨‍👦‍👦 Шопинг (Трон)
                 
-                تکسید آیدی: $hash_id
+                 Идентификатор хеша: $hash_id
                 
-                🧝‍♂️آیدی کاربر: $user_id
-                🛡اسم کاربر: $first_name
-                🔖 نام کاربری: $username
-                💰مبلغ پرداختی: $price تومان ($tronPrice ترون)
-                🔮 نام سرویس: $remark
-                🔋حجم سرویس: $volume گیگ
-                ⏰ مدت سرویس: $days روز
+                 🧝‍♂️Идентификатор пользователя: $user_id
+                 Имя пользователя: $first_name
+                 🔖 Имя пользователя: $username
+                 💰 Сумма оплаты: $price токенов ($tronPrice Tron)
+                 🔮 Имя сервиса: $remark
+                 🔋 Объем услуги: $volume Гб
+                 ⏰ Продолжительность услуги: $days
                 ⁮⁮ 
                 ",$keys,"html", $admin);
                 }
@@ -310,8 +309,8 @@ while($payParam = $paysList->fetch_assoc()){
                     $stmt->bind_param("ii", $price, $user_id);
                     $stmt->execute(); 
                     $stmt->close(); 
-                    sendMessage("تراکنش شما با تکسید آیدی $hash_id تأیید شد\n ✅ مبلغ " . number_format($price). " تومان به حساب شما اضافه شد",null,null,$user_id);
-                    sendMessage("✅ مبلغ " . number_format($price) . " تومان ($tronPrice ترون) به کیف پول کاربر $user_id توسط درگاه ترون اضافه شد",null,null,$admin);                
+                    sendMessage("Ваша транзакция подтверждена с хэш-идентификатором $hash_id\n ✅ Количество " . number_format($price). " токенов добавлен в ваш аккаунт",null,null,$user_id);
+                    sendMessage("✅ Количество " . number_format($price) . " токенов ($tronPrice Tron) был добавлен в кошелек пользователя $user_id через порт Tron.",null,null,$admin);                
                 }
                 elseif($payType == "RENEW_ACCOUNT"){
                     $oid = $plan_id;
@@ -347,8 +346,8 @@ while($payParam = $paysList->fetch_assoc()){
                         $stmt->bind_param("ii", $price, $user_id);
                         $stmt->execute();
                         $stmt->close();
-                        sendMessage("تراکنش شما با تکسید آیدی $hash_id تأیید شد ولی مشکل فنی در اتصال به سرور پیش اومده\n✅ مبلغ " . number_format($price). " تومان به حساب شما اضافه شد",null,null,$user_id);
-                        sendMessage("✅ مبلغ " . number_format($price) . " تومان ($tronPrice ترون) به کیف پول کاربر $user_id اضافه شد، میخواست کانفیگش رو تمدید کنه، ولی اتصال به سرور برقرار نبود",null,null,$admin);
+                        sendMessage("Ваша транзакция была подтверждена с идентификатором $hash_id, но возникла техническая проблема с подключением к серверу. " . number_format($price). " токенов добавлено в ваш аккаунт",null,null,$user_id);
+                        sendMessage("✅ Количество " . number_format($price) . " токенов ($tronPrice Tron) был добавлен в кошелек пользователя $user_id, он хотел обновить свою конфигурацию, но соединение с сервером не было установлено.",null,null,$admin);
                 		exit;
                 	}
                 	$stmt = $connection->prepare("UPDATE `orders_list` SET `expire_date` = ?, `notif` = 0 WHERE `id` = ?");
@@ -361,25 +360,24 @@ while($payParam = $paysList->fetch_assoc()){
                 	$stmt->execute();
                 	$stmt->close();
                 	
-                    sendMessage("✅سرویس $remark با موفقیت تمدید شد",null,null,$user_id);
+                    sendMessage("✅Услуга $remark успешно продлена.",null,null,$user_id);
                     
                     $keys = json_encode(['inline_keyboard'=>[
                         [
-                            ['text'=>"خرید از درگاه ترون 💞",'callback_data'=>'wizwizch'],
+                            ['text'=>"Купить на портале Tron 💞",'callback_data'=>'wizwizch'],
                             ],
                         ]]);
                     $user_info = Bot('getChat',['chat_id'=>$user_id])->result;
                     $first_name = $user_info->first_name;
                     $username = $user_info->username;
                 
-                sendMessage("
-                💚 تمدید اکانت ( با درگاه ترون )
+                sendMessage("💚 Продление аккаунта (с портом Tron)
                 
-                🧝‍♂️آیدی کاربر: $user_id
-                🛡اسم کاربر: $first_name
-                🔖 نام کاربری: $username
-                💰مبلغ پرداختی: $price تومان ($tronPrice ترون)
-                🔮 نام سرویس: $remark
+                 🧝‍♂️Идентификатор пользователя: $user_id
+                 Имя пользователя: $first_name
+                 🔖 Имя пользователя: $username
+                 💰 Сумма оплаты: $price токенов ($tronPrice Tron)
+                 🔮 Имя сервиса: $remark
                 ⁮⁮ ⁮⁮
                 ",$keys,"html", $admin);
                 exit;
@@ -427,24 +425,23 @@ while($payParam = $paysList->fetch_assoc()){
                         $stmt->execute();
                         $stmt->close();
                         
-                        sendMessage("پرداخت شما با تکسید آیدی $hash_id با موفقیت انجام شد. $volume روز به مدت زمان سرویس شما اضافه شد",null,null,$user_id);
+                        sendMessage("Ваш платеж был успешно завершен с идентификатором $hash_id. \nК продолжительности вашего обслуживания добавлено $volume дней.",null,null,$user_id);
                         $keys = json_encode(['inline_keyboard'=>[
                         [
-                            ['text'=>"خرید از درگاه ترون 💞",'callback_data'=>'wizwizch'],
+                            ['text'=>"Купить на портале Tron 💞",'callback_data'=>'wizwizch'],
                             ],
                             ]]);
                                     $user_info = Bot('getChat',['chat_id'=>$user_id])->result;
                     $first_name = $user_info->first_name;
                     $username = $user_info->username;
                 
-                sendMessage("
-                💜 افزایش زمان سرویس (درگاه ترون)
+                sendMessage("💜 Увеличение времени обслуживания (порт Трон)
                 
-                🧝‍♂️آیدی کاربر: $user_id
-                🛡اسم کاربر: $first_name
-                🔖 نام کاربری: $username
-                💰مبلغ پرداختی: $price تومان ($tronPrice ترون)
-                🔮 نام سرویس: $remark
+                 🧝‍♂️Идентификатор пользователя: $user_id
+                 Имя пользователя: $first_name
+                 🔖 Имя пользователя: $username
+                 💰 Сумма оплаты: $price токенов ($tronPrice Tron)
+                 🔮 Имя сервиса: $remark
                 ⁮⁮ ⁮⁮
                 ",$keys,"html", $admin);
                 exit;
@@ -453,8 +450,8 @@ while($payParam = $paysList->fetch_assoc()){
                         $stmt->bind_param("ii", $price, $user_id);
                         $stmt->execute();
                         $stmt->close();
-                        sendMessage("تراکنش شما با تکسید آیدی $hash_id تأیید شد، ولی به دلیل مشکل فنی امکان افزایش حجم نیست، لطفا به مدیریت اطلاع بده\n✅ مبلغ " . number_format($price). " تومان به حساب شما اضافه شد",null,null,$user_id);
-                        sendMessage("✅ مبلغ " . number_format($price) . " تومان به کیف پول کاربر $user_id اضافه شد، میخواست زمان سرویسشو افزایش بده",null,null,$admin);
+                        sendMessage("Ваша транзакция подтверждена с идентификатором $hash_id,\n но из-за технической проблемы увеличить объем невозможно, сообщите об этом руководству." . number_format($price). " токенов добавлен в ваш аккаунт",null,null,$user_id);
+                        sendMessage("✅ Сумма " . number_format($price) . " токенов добавили в кошелек пользователя $user_id, он захотел увеличить время обслуживания",null,null,$admin);
                         exit;
                     }
                 }
@@ -492,24 +489,23 @@ while($payParam = $paysList->fetch_assoc()){
                         $stmt->bind_param("s", $uuid);
                         $stmt->execute();
                         $stmt->close();
-                        sendMessage("پرداخت شما با تکسید آیدی $hash_id تأیید شد. $volume گیگ به حجم سرویس شما اضافه شد",null,null,$user_id);
+                        sendMessage("Ваш платеж подтвержден с помощью хэш-идентификатора $hash_id.  $volume Гб добавлено к объему вашего сервиса.",null,null,$user_id);
                         $keys = json_encode(['inline_keyboard'=>[
                         [
-                            ['text'=>"خرید از درگاه ترون 💞",'callback_data'=>'wizwizch'],
+                            ['text'=>"Купить на портале Tron 💞",'callback_data'=>'wizwizch'],
                             ],
                             ]]);
                                     $user_info = Bot('getChat',['chat_id'=>$user_id])->result;
                     $first_name = $user_info->first_name;
                     $username = $user_info->username;
                 
-                sendMessage("
-                🤎 افزایش حجم سرویس (درگاه ترون)
+                sendMessage("🤎 Увеличение объема услуги (порт Tron)
                 
-                🧝‍♂️آیدی کاربر: $user_id
-                🛡اسم کاربر: $first_name
-                🔖 نام کاربری: $username
-                💰مبلغ پرداختی: $price تومان ($tronPrice ترون)
-                🔮 نام سرویس: $remark
+                 🧝‍♂️Идентификатор пользователя: $user_id
+                 Имя пользователя: $first_name
+                 🔖 Имя пользователя: $username
+                 💰 Сумма оплаты: $price токенов ($tronPrice Tron)
+                 🔮 Имя сервиса: $remark
                 ⁮⁮ ⁮⁮
                 ",$keys,"html", $admin);
                 exit;
@@ -518,8 +514,8 @@ while($payParam = $paysList->fetch_assoc()){
                         $stmt->bind_param("ii", $price, $user_id);
                         $stmt->execute();
                         $stmt->close();
-                        sendMessage("پرداخت شما با تکسید آیدی $hash_id تأیید شد ولی به دلیل مشکل فنی امکان افزایش نیست لطفا به مدیریت اطلاع بده\n✅ مبلغ " . number_format($price). " تومان به حساب شما اضافه شد",null,null,$user_id);
-                        sendMessage("✅ مبلغ " . number_format($price) . " تومان به کیف پول کاربر $user_id اضافه شد، میخواست حجم کانفیگشو افزایش بده",null,null,$admin);                
+                        sendMessage("Ваш платеж подтвержден с идентификатором $hash_id, \nно из-за технической проблемы увеличить его невозможно, сообщите об этом руководству. " . number_format($price). " токенов добавлено в ваш аккаунт",null,null,$user_id);
+                        sendMessage("✅ Сумма " . number_format($price) . " токенов добавили в кошелек пользователя $user_id, он захотел увеличить размер своей конфигурации",null,null,$admin);                
                 
                         exit;
                     }
@@ -559,14 +555,14 @@ while($payParam = $paysList->fetch_assoc()){
                         $response = editInboundTraffic($server_id, $uuid, $volume, $days, "renew");
                     
                 	if(is_null($response)){
-                		sendMessage('🔻مشکل فنی در اتصال به سرور. لطفا به مدیریت اطلاع بدید',null,null,$user_id);
+                		sendMessage('🔻Техническая проблема с подключением к серверу. Пожалуйста, сообщите руководству',null,null,$user_id);
                 		
                         $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
                         $stmt->bind_param("ii", $price, $user_id);
                         $stmt->execute();
                         $stmt->close();
-                        sendMessage("پرداخت شما با تکسید آیدی $hash_id تأیید شد ولی مشکل فنی در اتصال به سرور پیش اومده لطفا به مدیریت اطلاع بده\n✅ مبلغ " . number_format($price). " تومان به حساب شما اضافه شد",null,null,$user_id);
-                        sendMessage("✅ مبلغ " . number_format($price) . " تومان به کیف پول کاربر $user_id اضافه شد، میخواست کانفیگشو تمدید کنه",null,null,$admin);                
+                        sendMessage("Ваш платеж подтвержден с идентификатором $hash_id, но возникла техническая проблема с подключением к серверу, сообщите об этом руководству. " . number_format($price). " токенов добавлено в ваш аккаунт",null,null,$user_id);
+                        sendMessage("✅ Сумма " . number_format($price) . " токенов было добавлено в кошелек пользователя $user_id, он хотел обновить свою конфигурацию",null,null,$admin);                
 
                 		exit;
                 	}
@@ -574,7 +570,7 @@ while($payParam = $paysList->fetch_assoc()){
                 	$stmt->bind_param("iiisii", $user_id, $server_id, $inbound_id, $remark, $price, $time);
                 	$stmt->execute();
                 	$stmt->close();
-                    sendMessage("تراکنش شما با تکسید آیدی $hash_id تأیید شد\n✅سرویس $remark با موفقیت تمدید شد",null,null,$user_id);
+                    sendMessage("Ваша транзакция подтверждена с идентификатором $hash_id.\n$remark услуга успешно продлена",null,null,$user_id);
                 
                 }
             }else{

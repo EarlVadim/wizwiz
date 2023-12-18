@@ -32,7 +32,7 @@ if(isset($_GET['NP_id'])){
     $stmt->close();
     
     if(mysqli_num_rows($payInfo)==0){
-        showForm("کد پرداخت یافت نشد","خطا!");
+        showForm("Payment code not found","error!");
     }else{
         $payParam = $payInfo->fetch_assoc();
         $rowId = $payParam['id'];
@@ -43,12 +43,12 @@ if(isset($_GET['NP_id'])){
         $plan_id = $payParam['plan_id'];
         $volume = $payParam['volume'];
         $days = $payParam['day'];
-        if($payType == "BUY_SUB") $payDescription = "خرید اکانت";
-        elseif($payType == "RENEW_ACCOUNT") $payDescription = "تمدید اکانت";
-        elseif($payType == "RENEW_SCONFIG") $payDescription = "تمدید اکانت";
-        elseif($payType == "INCREASE_WALLET") $payDescription ="شارژ کیف پول";
-        elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType)) $payDescription = "افزایش زمان اکانت";
-        elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType)) $payDescription = "افزایش حجم اکانت";    
+        if($payType == "BUY_SUB") $payDescription = "Account purchase";
+        elseif($payType == "RENEW_ACCOUNT") $payDescription = "Account renewal";
+        elseif($payType == "RENEW_SCONFIG") $payDescription = "Config renewal";
+        elseif($payType == "INCREASE_WALLET") $payDescription ="Recharge wallet";
+        elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType)) $payDescription = "Increase account time";
+        elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType)) $payDescription = "Increase account volume";    
     
         //==============================================================
         if($res->payment_status == 'finished' or $res->payment_status == 'confirmed' or $res->payment_status == 'sending'){
@@ -60,20 +60,20 @@ if(isset($_GET['NP_id'])){
                 $stmt->execute();
                 $stmt->close();
                 
-                showForm("#$hash_id - شما هزینه کمتری واریز کردید، لطفا به پشتیبانی مراجعه کنید",$payDescription);
+                showForm("#$hash_id - You have underpaid, please contact support",$payDescription);
             }else{
                 $stmt = $connection->prepare("UPDATE `pays` SET `state` = 'canceled' WHERE `payid` =?");
                 $stmt->bind_param("i", $hash_id);
                 $stmt->execute();
                 $stmt->close();
 
-                showForm("پرداخت انجام نشد",$payDescription);
+                showForm("Payment was not made",$payDescription);
             }
         }
     }
 }
 else{
-    showForm("پرداخت انجام نشد","خطا!");
+    showForm("Payment was not made","Error!");
 }
 }
 elseif(isset($_GET['zarinpal'])){
@@ -85,7 +85,7 @@ $payInfo = $stmt->get_result();
 $stmt->close();
 
 if(mysqli_num_rows($payInfo)==0){
-    showForm("کد پرداخت یافت نشد","خطا!");
+    showForm("Payment code not found","Error!");
 }else{
     $payParam = $payInfo->fetch_assoc();
     $rowId = $payParam['id'];
@@ -111,7 +111,7 @@ if(mysqli_num_rows($payInfo)==0){
         $stmt->execute();
         $stmt->close();
         
-        showForm("پرداخت شما انجام نشد!","درگاه زرین پال");
+        showForm("Your payment failed!","ZarinPal portal");
     }
 }
 }
@@ -124,7 +124,7 @@ $payInfo = $stmt->get_result();
 $stmt->close();
 
 if(mysqli_num_rows($payInfo)==0){
-    showForm("کد پرداخت یافت نشد","خطا!");
+    showForm("Payment code not found","Error!");
 }else{
     $payParam = $payInfo->fetch_assoc();
     $rowId = $payParam['id'];
@@ -159,12 +159,12 @@ if(mysqli_num_rows($payInfo)==0){
         $stmt->execute();
         $stmt->close();
         
-        showForm("پرداخت شما انجام نشد!","درگاه نکست پی");
+        showForm("Your payment failed!", "NextPay portal");
     }
 }
 }
 else{
-showForm("درگاه پرداخت شناسایی نشد","خطا!");
+showForm("Payment port not detected","Error!");
 exit();
 }
 
@@ -191,13 +191,13 @@ $volume = $payParam['volume'];
 $days = $payParam['day'];
 $agentBought = $payParam['agent_bought'];
 
-if($payType == "BUY_SUB") $payDescription = "خرید اشتراک";
-elseif($payType == "RENEW_ACCOUNT") $payDescription = "تمدید اکانت";
-elseif($payType == "INCREASE_WALLET") $payDescription ="شارژ کیف پول";
-elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType)) $payDescription = "افزایش زمان اکانت";
-elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType)) $payDescription = "افزایش حجم اکانت";    
+if($payType == "BUY_SUB") $payDescription = "Buy a subscription";
+elseif($payType == "RENEW_ACCOUNT") $payDescription = "Account renewal";
+elseif($payType == "INCREASE_WALLET") $payDescription ="Recharge wallet";
+elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType)) $payDescription = "Increase account time";
+elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType)) $payDescription = "Increase account volume";    
 
-if($gateType == "zarinpal" || $gateType == "nextpay") $payDescription = "خرید اشتراک";
+if($gateType == "zarinpal" || $gateType == "nextpay") $payDescription = "Buy a subscription";
 
 $stmt = $connection->prepare("UPDATE `pays` SET `state` = 'paid' WHERE `id` =?");
 $stmt->bind_param("i", $payRowId);
@@ -244,14 +244,14 @@ if($payType == "BUY_SUB"){
     $eachPrice = $amount / $accountCount;
 
     if($acount == 0 and $inbound_id != 0){
-        showForm('پرداخت شما انجام شد ولی ظرفیت این کانکشن پر شده است، مبلغ ' . number_format($amount) . " تومان به کیف پول شما اضافه شد",$payDescription, false);
+        showForm('Your payment was made, but the capacity of this connection is full, amount' . number_format($amount) . " Tokens have been added to your wallet",$payDescription, false);
         
         $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
         $stmt->bind_param("ii", $amount, $user_id);
         $stmt->execute();
         $stmt->close();
-        sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-        sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id توسط درگاه اضافه شد میخواست کانفیگ بخره، ظرفیت پر بود",null,null,$admin);                
+        sendMessage("✅ Amount " . number_format($amount). " Tokens have been added to your account",null,null,$user_id);
+        sendMessage("✅ Amount " . number_format($amount) . " Tokens to the user's wallet $user_id It was added by the port, it wanted to configure, the capacity was full",null,null,$admin);                
 
         exit;
     }
@@ -263,14 +263,14 @@ if($payType == "BUY_SUB"){
         $stmt->close();
 
         if($server_info['ucount'] <= 0) {
-            showForm('پرداخت شما انجام شد ولی ظرفیت این سرور پر شده است، مبلغ ' . number_format($amount) . " تومان به کیف پول شما اضافه شد",$payDescription, false);
+            showForm('Your payment was made, but the capacity of this server is full, amount ' . number_format($amount) . " Tokens have been added to your wallet",$payDescription, false);
             
             $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
             $stmt->bind_param("ii", $amount, $user_id);
             $stmt->execute();
             $stmt->close();
-            sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-            sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id توسط درگاه اضافه شد میخواست کانفیگ بخره، ظرفیت پر بود",null,null,$admin);                
+            sendMessage("✅ Amount " . number_format($amount). " Tokens have been added to your account",null,null,$user_id);
+            sendMessage("✅ Amount " . number_format($amount) . " Tokens to the user's wallet $user_id It was added by the port, it wanted to configure, the capacity was full",null,null,$admin);                
             exit;
         }
     }
@@ -332,38 +332,38 @@ if($payType == "BUY_SUB"){
         }
         
         if(is_null($response)){
-            showForm('پرداخت شما با موفقیت انجام شد ولی گلم ، اتصال به سرور برقرار نیست لطفا مدیر رو در جریان بزار ...مبلغ ' . number_format($amount) ." به کیف پولت اضافه شد",$payDescription);
+            showForm('Your payment has been successfully made, but the connection to the server is not established, please inform the administrator... The amount ' . number_format($amount) ." added to wallet",$payDescription);
             
             $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
             $stmt->bind_param("ii", $amount, $user_id);
             $stmt->execute();
             $stmt->close();
-            sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-            sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id توسط درگاه اضافه شد میخواست کانفیگ بخره، اتصال به سرور برقرار نبود",null,null,$admin);                
+            sendMessage("✅ Amount " . number_format($amount). " Tokens have been added to your account",null,null,$user_id);
+            sendMessage("✅ Amount " . number_format($amount) . " Tokens to the user's wallet $user_id It was added by the port, it wanted to configure, the connection to the server was not established",null,null,$admin);                
     
             exit;
         }
     	if($response == "inbound not Found"){
-            showForm("پرداخت شما با موفقیت انجام شد ولی ❌ | 🥺 سطر (inbound) با آیدی $inbound_id تو این سرور وجود نداره ، مدیر رو در جریان بزار ...مبلغ " . number_format($amount) . " به کیف پول شما اضافه شد",$payDescription);
+            showForm("Your payment was made successfully, but ❌ | 🥺 Line (inbound) with ID $inbound_id It does not exist in this server, inform the manager...the amount " . number_format($amount) . " Added to your wallet",$payDescription);
     
             $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
             $stmt->bind_param("ii", $amount, $user_id);
             $stmt->execute();
             $stmt->close();
-            sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-            sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id توسط درگاه اضافه شد میخواست کانفیگ بخره، ولی انباند پیدا نشد",null,null,$admin);                
+            sendMessage("✅ Amount " . number_format($amount). " Tokens have been added to your account",null,null,$user_id);
+            sendMessage("✅ Amount " . number_format($amount) . " Tokens to the user's wallet $user_id It was added by the port, it wanted to buy configuration, but the storage was not found",null,null,$admin);                
     
     		exit;
     	}
     	if(!$response->success){
-            showForm('پرداخت شما با موفقیت انجام شد ولی خطا داد لطفا سریع به مدیر بگو ... مبلغ '. number_format($amount) . " تومان به کیف پولت اضافه شد",$payDescription);
-            sendMessage("خطای سرور {$serverInfo['title']}:\n\n" . $response['msg'], null, null, $admin);
+            showForm('Your payment was made successfully, but an error occurred. Please tell the manager quickly... the amount '. number_format($amount) . " Token has been added to your wallet",$payDescription);
+            sendMessage("Server error {$serverInfo['title']}:\n\n" . $response['msg'], null, null, $admin);
             $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
             $stmt->bind_param("ii", $amount, $user_id);
             $stmt->execute();
             $stmt->close();
-            sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-            sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id توسط درگاه اضافه شد میخواست کانفیگ بخره، ولی خطا داد",null,null,$admin);                
+            sendMessage("✅ Amount " . number_format($amount). " Tokens have been added to your account",null,null,$user_id);
+            sendMessage("✅ Amount " . number_format($amount) . " Tokens to the user's wallet $user_id It was added by the port, it wanted to buy configuration, but it gave an error",null,null,$admin);                
             exit;
         }
     
@@ -373,11 +373,11 @@ if($payType == "BUY_SUB"){
 
         foreach($vraylink as $vray_link){
             $acc_text = "
-😍 سفارش جدید شما
-📡 پروتکل: $protocol
-🔮 نام سرویس: $remark
-🔋حجم سرویس: $volume گیگ
-⏰ مدت سرویس: $days روز
+😍 Your new order
+📡 protocol: $protocol
+🔮 Service name: $remark
+🔋Service volume: $volume Gig
+⏰ Service period: $days Day
 ".
 ($botState['configLinkState'] != "off"?
 "
@@ -409,7 +409,7 @@ if($payType == "BUY_SUB"){
             imagedestroy($backgroundImage);
             imagedestroy($qrImage);
 
-        	sendPhoto($botUrl . "pay/" . $file, $acc_text,json_encode(['inline_keyboard'=>[[['text'=>"صفحه اصلی 🏘",'callback_data'=>"mainMenu"]]]]),"HTML", $user_id);
+        	sendPhoto($botUrl . "pay/" . $file, $acc_text,json_encode(['inline_keyboard'=>[[['text'=>"Main Page 🏘",'callback_data'=>"mainMenu"]]]]),"HTML", $user_id);
             unlink($file);
         }
         $vray_link = json_encode($vraylink);
@@ -425,7 +425,7 @@ if($payType == "BUY_SUB"){
         
     }
 
-    showForm('پرداخت شما با موفقیت انجام شد 🚀 | 😍 در حال ارسال کانفیگ به تلگرام شما ...',$payDescription, true);
+    showForm('Your payment has been successfully completed 🚀 | 😍 Sending configuration to your telegram ...',$payDescription, true);
     
     
     $stmt = $connection->prepare("SELECT * FROM `users` WHERE `userid` = ?");
@@ -458,7 +458,7 @@ if($payType == "BUY_SUB"){
         $stmt->execute();
         $stmt->close();
          
-        sendMessage("تبریک یکی از زیر مجموعه های شما خرید انجام داد شما مبلغ " . number_format($inviteAmount) . " تومان جایزه دریافت کردید",null,null,$inviterId);
+        sendMessage("Congratulations, one of your subsets made a purchase " . number_format($inviteAmount) . " You received a reward of Rs",null,null,$inviterId);
     }
 
     $user_info = Bot('getChat',['chat_id'=>$user_id])->result;
@@ -467,20 +467,19 @@ if($payType == "BUY_SUB"){
     
     $keys = json_encode(['inline_keyboard'=>[
         [
-            ['text'=>"خرید از درگاه $gateType 💞",'callback_data'=>'wizwizch'],
+            ['text'=>"Purchase from the portal $gateType 💞",'callback_data'=>'wizwizch'],
             ],
         ]]);
-sendMessage("
-👨‍👦‍👦 خرید ( درگاه $gateType )
+sendMessage("👨‍👦‍👦 buy (port $gateType )
 
-🧝‍♂️آیدی کاربر: $user_id
-🛡اسم کاربر: $first_name
-🔖 نام کاربری: $username
-💰مبلغ پرداختی: $amount تومان
-🔮 نام سرویس: $remark
-🔋حجم سرویس: $volume گیگ
-⏰ مدت سرویس: $days روز
-⁮⁮ 
+🧝‍♂️User ID: $user_id
+Username: $first_name
+🔖 Username: $username
+💰 Amount paid: $amount Toman
+🔮 Service name: $remark
+🔋 Service volume: $ volume gig
+⏰ Service duration: $days
+⁮⁮
 ",$keys,"html", $admin);
 }
 elseif($payType == "INCREASE_WALLET"){
@@ -488,9 +487,9 @@ elseif($payType == "INCREASE_WALLET"){
     $stmt->bind_param("ii", $amount, $user_id);
     $stmt->execute(); 
     $stmt->close(); 
-    showForm("پرداخت شما با موفقیت انجام شد، مبلغ ". number_format($amount) . " تومان به کیف پول شما اضافه شد",$payDescription, true);
-    sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-    sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id توسط درگاه اضافه شد",null,null,$admin);                
+    showForm("Your payment has been successfully completed, the amount ". number_format($amount) ." Tomans has been added to your wallet.",$payDescription, true);
+    sendMessage("✅ The amount " . number_format($amount). " Tokens was added to your account",null,null,$user_id);
+    sendMessage("✅ The amount ".number_format($amount)." was added to the wallet of the user $user_id by the portal",null,null,$admin);                
 }
 elseif($payType == "RENEW_ACCOUNT"){
     $oid = $plan_id;
@@ -522,14 +521,14 @@ elseif($payType == "RENEW_ACCOUNT"){
         $response = editInboundTraffic($server_id, $uuid, $volume, $days, "renew");
 
 	if(is_null($response)){
-		showForm('پرداخت شما با موفقیت انجام شد ولی مشکل فنی در اتصال به سرور. لطفا به مدیریت اطلاع بدید، مبلغ ' . number_format($amount) . " تومان به کیف پول شما اضافه شد",$payDescription);
+		showForm('Your payment was successfully made, but there is a technical problem in connecting to the server. Please inform the management ' . number_format($amount) . " Tokens have been added to your wallet",$payDescription);
 		
         $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
         $stmt->bind_param("ii", $amount, $user_id);
         $stmt->execute();
         $stmt->close();
-        sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-        sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id اضافه شد، میخواست کانفیگش رو تمدید کنه، ولی اتصال به سرور برقرار نبود",null,null,$admin);
+        sendMessage("✅ The amount " .number_format($amount). " Tokens was added to your account",null,null,$user_id);
+        sendMessage("✅ The amount ".number_format($amount)." Tomans was added to the wallet of user $user_id, he wanted to renew his configuration, but the connection to the server was not established.",null,null,$admin);
 		exit;
 	}
 	$stmt = $connection->prepare("UPDATE `orders_list` SET `expire_date` = ?, `notif` = 0 WHERE `id` = ?");
@@ -542,25 +541,24 @@ elseif($payType == "RENEW_ACCOUNT"){
 	$stmt->execute();
 	$stmt->close();
 	
-    showForm("✅سرویس $remark با موفقیت تمدید شد",$payDescription, true);
+    showForm("✅ The $remark service was successfully renewed",$payDescription, true);
     
     $keys = json_encode(['inline_keyboard'=>[
         [
-            ['text'=>"خرید از درگاه $gateType 💞",'callback_data'=>'wizwizch'],
+            ['text'=>"Purchase from the portal $gateType 💞",'callback_data'=>'wizwizch'],
             ],
         ]]);
     $user_info = Bot('getChat',['chat_id'=>$user_id])->result;
     $first_name = $user_info->first_name;
     $username = $user_info->username;
 
-sendMessage("
-💚 تمدید اکانت ( با درگاه )
+sendMessage("💚 Account renewal (with port)
 
-🧝‍♂️آیدی کاربر: $user_id
-🛡اسم کاربر: $first_name
-🔖 نام کاربری: $username
-💰مبلغ پرداختی: $amount تومان
-🔮 نام سرویس: $remark
+🧝‍♂️User ID: $user_id
+Username: $first_name
+🔖 Username: $username
+💰 Amount paid: $amount Token
+🔮 Service name: $remark
 ⁮⁮ ⁮⁮
 ",$keys,"html", $admin);
 exit;
@@ -608,35 +606,34 @@ elseif(preg_match('/^INCREASE_DAY_(\d+)_(\d+)/',$payType,$match)){
         $stmt->execute();
         $stmt->close();
         
-        showForm("پرداخت شما با موفقیت انجام شد. $volume روز به مدت زمان سرویس شما اضافه شد",$payDescription, true);
+        showForm("Your payment has been successfully completed. $volume days have been added to your service duration",$payDescription, true);
         $keys = json_encode(['inline_keyboard'=>[
         [
-            ['text'=>"خرید از درگاه $gateType 💞",'callback_data'=>'wizwizch'],
+            ['text'=>"Purchase from the portal $gateType 💞",'callback_data'=>'wizwizch'],
             ],
             ]]);
                     $user_info = Bot('getChat',['chat_id'=>$user_id])->result;
     $first_name = $user_info->first_name;
     $username = $user_info->username;
 
-sendMessage("
-💜 افزایش زمان سرویس ( درگاه )
+sendMessage("💜 Increasing service time (port)
 
-🧝‍♂️آیدی کاربر: $user_id
-🛡اسم کاربر: $first_name
-🔖 نام کاربری: $username
-💰مبلغ پرداختی: $amount تومان
-🔮 نام سرویس: $remark
+🧝‍♂️User ID: $user_id
+Username: $first_name
+🔖 Username: $username
+💰 Amount paid: $amount Token
+🔮 Service name: $remark
 ⁮⁮ ⁮⁮
 ",$keys,"html", $admin);
 exit;
     }else {
-        showForm("پرداخت شما با موفقیت انجام شد ولی به دلیل مشکل فنی امکان افزایش حجم نیست. لطفا به مدیریت اطلاع بدید یا 5دقیقه دیگر دوباره تست کنید مبلغ " . number_format($amount) . " تومان به کیف پول شما اضافه شد", $payDescription, true);
+        showForm("Your payment has been successfully completed, but due to a technical problem, it is not possible to increase the volume. Please inform the management or test again in 5 minutes" . number_format($amount) . " Tokens have been added to your wallet", $payDescription, true);
         $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
         $stmt->bind_param("ii", $amount, $user_id);
         $stmt->execute();
         $stmt->close();
-        sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-        sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id اضافه شد، میخواست زمان سرویسشو افزایش بده",null,null,$admin);
+        sendMessage("✅ Amount " . number_format($amount). " Tokens have been added to your account",null,null,$user_id);
+        sendMessage("✅ Amount " . number_format($amount) . " Tokens was added to user $user_id 's wallet, she wanted to increase her service time",null,null,$admin);
         exit;
     }
 }
@@ -674,36 +671,35 @@ elseif(preg_match('/^INCREASE_VOLUME_(\d+)_(\d+)/',$payType, $match)){
         $stmt->bind_param("s", $uuid);
         $stmt->execute();
         $stmt->close();
-        showForm("پرداخت شما با موفقیت انجام شد. $volume گیگ به حجم سرویس شما اضافه شد",$payDescription, true);
+        showForm("Your payment has been successfully completed. $volume gig was added to your service volume",$payDescription, true);
         $keys = json_encode(['inline_keyboard'=>[
         [
-            ['text'=>"خرید از درگاه $gateType 💞",'callback_data'=>'wizwizch'],
+            ['text'=>"Purchase from the portal $gateType 💞",'callback_data'=>'wizwizch'],
             ],
             ]]);
                     $user_info = Bot('getChat',['chat_id'=>$user_id])->result;
     $first_name = $user_info->first_name;
     $username = $user_info->username;
 
-sendMessage("
-🤎 افزایش حجم سرویس ( درگاه )
+sendMessage("🤎 Increasing the service volume (port)
 
-🧝‍♂️آیدی کاربر: $user_id
-🛡اسم کاربر: $first_name
-🔖 نام کاربری: $username
-💰مبلغ پرداختی: $amount تومان
-🔮 نام سرویس: $remark
+🧝‍♂️User ID: $user_id
+Username: $first_name
+🔖 Username: $username
+💰 Amount paid: $amount Token
+🔮 Service name: $remark
 ⁮⁮ ⁮⁮
 ",$keys,"html", $admin);
 exit;
     }else {
-        showForm("پرداخت شما با موفقیت انجام شد ولی مشکل فنی در ارتباط با سرور. لطفا سلامت سرور را بررسی کنید مبلغ " . number_format($amount) . " تومان به کیف پول شما اضافه شد",$payDescription, true);
+        showForm("Your payment was successfully made, but there is a technical problem with the server. Please check the health of the server " . number_format($amount) . " Tokens have been added to your wallet",$payDescription, true);
         
         $stmt = $connection->prepare("UPDATE `users` SET `wallet` = `wallet` + ? WHERE `userid` = ?");
         $stmt->bind_param("ii", $amount, $user_id);
         $stmt->execute();
         $stmt->close();
-        sendMessage("✅ مبلغ " . number_format($amount). " تومان به حساب شما اضافه شد",null,null,$user_id);
-        sendMessage("✅ مبلغ " . number_format($amount) . " تومان به کیف پول کاربر $user_id اضافه شد، میخواست حجم کانفیگشو افزایش بده",null,null,$admin);                
+        sendMessage("✅ Amount " . number_format($amount). " Tokens have been added to your account",null,null,$user_id);
+        sendMessage("✅ Amount " . number_format($amount) . " Tokens was added to the wallet of user $user_id, it wanted to increase the size of configuration",null,null,$admin);                
 
         exit;
     }
@@ -743,17 +739,17 @@ elseif($payType == "RENEW_SCONFIG"){
         $response = editInboundTraffic($server_id, $uuid, $volume, $days, "renew");
     
 	if(is_null($response)){
-		alert('🔻مشکل فنی در اتصال به سرور. لطفا به مدیریت اطلاع بدید',true);
+		alert('🔻Technical problem connecting to the server. Please inform the management',true);
 		exit;
 	}
 	$stmt = $connection->prepare("INSERT INTO `increase_order` VALUES (NULL, ?, ?, ?, ?, ?, ?);");
 	$stmt->bind_param("iiisii", $user_id, $server_id, $inbound_id, $remark, $price, $time);
 	$stmt->execute();
 	$stmt->close();
-    sendMessage("✅سرویس $remark با موفقیت تمدید شد",null,null,$user_id);
+    sendMessage("✅ The $remark service was successfully renewed",null,null,$user_id);
 
 }
-sendMessage("پرداخت شما با موفقیت انجام شد",json_encode(['inline_keyboard'=>[[['text'=>"صفحه اصلی 🏘",'callback_data'=>"mainMenu"]]]]),null,$user_id);
+sendMessage("Your payment has been successfully completed",json_encode(['inline_keyboard'=>[[['text'=>"Main Page 🏘",'callback_data'=>"mainMenu"]]]]),null,$user_id);
 }
 
 function showForm($msg, $type = "", $state = false){

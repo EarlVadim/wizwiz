@@ -24,7 +24,7 @@ if($giftList->num_rows>0){
     $stmt->close();
 
     
-    if($offset == 0 && $server_offset == 0) sendMessage("عملیات هدیه حجم و زمان سرور $serverName شروع شد",null,null,$admin);
+    if($offset == 0 && $server_offset == 0) sendMessage("Volume and time donation operation of server $serverName started",null,null,$admin);
     
     $rowCount = 0;
     $found = false;
@@ -77,10 +77,10 @@ if($giftList->num_rows>0){
                         $orderId = $orderInfo['id'];
                         $user_id = $orderInfo['userid'];
                         $gift = "";
-                        if($volume != 0) $gift = "$volume مگابایت حجم ";
+                        if($volume != 0) $gift = "$volume MB volume ";
                         if($day != 0){
                             $expire_date = $day * 86400;
-                            $gift .= " و $day روز زمان";
+                            $gift .= " و $day day of time";
                             $stmt = $connection->prepare("UPDATE `orders_list` SET `expire_date` = `expire_date` + ? WHERE `id` = ?");
                             $stmt->bind_param("ii", $expire_date, $orderId);
                             $stmt->execute();
@@ -121,17 +121,17 @@ if($giftList->num_rows>0){
                     $orderId = $orderInfo['id'];
                     $user_id = $orderInfo['userid'];
                     $gift = "";
-                    if($volume != 0) $gift = "$volume مگابایت حجم ";
+                    if($volume != 0) $gift = "$volume объем МБ ";
                     if($day != 0){
                         $expire_date = $day * 86400;
-                        $gift .= " و $day روز زمان";
+                        $gift .= " و $day дней";
                         $stmt = $connection->prepare("UPDATE `orders_list` SET `expire_date` = `expire_date` + ? WHERE `id` = ?");
                         $stmt->bind_param("ii", $expire_date, $orderId);
                         $stmt->execute();
                         $stmt->close();
                     }
                     
-                    sendMessage("به اشتراک $remark شما $gift اضافه شد",null,null,$user_id);
+                    sendMessage("Делиться $remark - $gift добавлен",null,null,$user_id);
                 }
             }
             $rowCount++;
@@ -145,6 +145,6 @@ if($giftList->num_rows>0){
         $stmt->execute();
         $stmt->close();
         
-        sendMessage("عملیات هدیه حجم و زمان سرور $serverName به اتمام رسید",null,null,$admin);
+        sendMessage("Операция пожертвования объема и времени сервера $serverName завершена",null,null,$admin);
     }
 }
