@@ -26,16 +26,13 @@ echo -e "\e[92mThe server was successfully updated ...\033[0m\n"
 
 
 PKG=(
-    lamp-server^
-    libapache2-mod-php 
     mysql-server 
-    apache2 
     php-mbstring 
     php-zip 
     php-gd 
     php-json 
     php-curl 
-#     phpmyadmin
+    phpmyadmin
 )
 
 for i in "${PKG[@]}"
@@ -58,16 +55,16 @@ echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selecti
 echo 'phpmyadmin phpmyadmin/app-password-confirm password wizwizhipass' | debconf-set-selections
 echo 'phpmyadmin phpmyadmin/mysql/admin-pass password wizwizhipass' | debconf-set-selections
 echo 'phpmyadmin phpmyadmin/mysql/app-pass password wizwizhipass' | debconf-set-selections
-echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
-sudo apt-get install phpmyadmin -y
-sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
-sudo a2enconf phpmyadmin.conf
-sudo systemctl restart apache2
+#echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
+#sudo apt-get install phpmyadmin -y
+#sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
+#sudo a2enconf phpmyadmin.conf
+#sudo systemctl restart apache2
 
 wait
 
 sudo apt-get install -y php-soap
-sudo apt-get install libapache2-mod-php
+#sudo apt-get install libapache2-mod-php
 
 # extension=soap.so
 # echo "extension=soap.so" >> /usr/local/lib/php.ini
@@ -77,14 +74,14 @@ sudo apt-get install libapache2-mod-php
 # services
 sudo systemctl enable mysql.service
 sudo systemctl start mysql.service
-sudo systemctl enable apache2
-sudo systemctl start apache2
+#sudo systemctl enable apache2
+#sudo systemctl start apache2
 
 echo -e "\n\e[92m Setting Up UFW...\033[0m\n"
 
-ufw allow 'Apache'
+#ufw allow 'Apache'
 
-sudo systemctl restart apache2
+#sudo systemctl restart apache2
 
 echo -e "\n\e[92mInstalling ...\033[0m\n"
 
@@ -97,7 +94,7 @@ sudo apt install curl -y
 sudo apt-get install -y php-ssh2
 sudo apt-get install -y libssh2-1-dev libssh2-1
 
-sudo systemctl restart apache2.service
+#sudo systemctl restart apache2.service
 
 wait
 
@@ -192,12 +189,12 @@ echo -e "\n\033[1;7;34mObtaining SSL certificate using standalone mode...\033[0m
 sudo certbot certonly --standalone --agree-tos --preferred-challenges http -d $DOMAIN_NAME
 
 # Certbot Apache plugin
-echo -e "\n\033[1;7;35mInstalling Certbot Apache plugin...\033[0m\n"
-sudo apt install python3-certbot-apache -y
+#echo -e "\n\033[1;7;35mInstalling Certbot Apache plugin...\033[0m\n"
+#sudo apt install python3-certbot-apache -y
 
 # SSL certificate using Apache plugin
-echo -e "\n\033[1;7;36mObtaining SSL certificate using Apache plugin...\033[0m\n"
-sudo certbot --apache --agree-tos --preferred-challenges http -d $DOMAIN_NAME
+#echo -e "\n\033[1;7;36mObtaining SSL certificate using Apache plugin...\033[0m\n"
+#sudo certbot --apache --agree-tos --preferred-challenges http -d $DOMAIN_NAME
 
 # echo -e "\n\033[1;7;33mObtaining SSL certificate using manual DNS mode (wildcard)...\033[0m\n"
 # sudo certbot certonly --manual --agree-tos --preferred-challenges dns -d $DOMAIN_NAME -d $WILDCARD_DOMAIN
